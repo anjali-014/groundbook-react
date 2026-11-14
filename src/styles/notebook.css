@@ -1,0 +1,33 @@
+/* The rows that open a booking, and the lines of a booking's record: the lock note and each line's round icon. */
+
+button.row-link { border: 0; cursor: pointer; font: inherit; }
+.table tr.is-openable { cursor: pointer; }
+.table tr.is-openable:hover td { background: var(--surface-2); }
+
+.nb-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(22, 24, 27, .06);
+  font-size: var(--t-12);
+  font-weight: 700;
+  color: var(--ink-2);
+}
+
+.nb-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  background: #fbf8ef;
+  color: var(--ink-2);
+}
+
+@media (max-width: 640px) {
+  .nb-lock { white-space: nowrap; }
+}
+

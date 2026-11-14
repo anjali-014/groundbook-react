@@ -1,0 +1,197 @@
+[
+  {
+    "ticket": "F-01",
+    "test": "the home page says \"Deccan Sports Complex · the planner\" over the heading \"Four grounds.\" / \"No pencil on the wall.\"",
+    "criterion": 0,
+    "what_should_happen": "Above the big heading the home page says \"Deccan Sports Complex · the planner\". The heading reads \"Four grounds.\" with \"No pencil on the wall.\" on the next line.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "Deccan Sports Complex · the planner",
+      "Four grounds.",
+      "No pencil on the wall."
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "once the numbers are in, the counts read 4 grounds, 6 event types and 1 held next Saturday on A",
+    "criterion": 1,
+    "what_should_happen": "The row of counts shows how many grounds and event types the planner has, and how many bookings hold Ground A next Saturday. With one booking on Ground A next Saturday, once everything has arrived it reads 4 grounds, 6 event types and 1 held next Saturday on A.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "grounds",
+      "event types",
+      "held next Saturday on A"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "with nothing booked, once Ground A's day is in, held next Saturday on A is 0",
+    "criterion": 2,
+    "what_should_happen": "When nobody has booked anything yet, the count of bookings held next Saturday on Ground A is 0. It still says 0 after Ground A's day has arrived.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "held next Saturday on A",
+      "grounds"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "two bookings on Ground A next Saturday, one of them cancelled, count as 1 held",
+    "criterion": 3,
+    "what_should_happen": "Ground A has two bookings next Saturday and one of them has been cancelled. A cancelled booking holds nothing, so the count reads 1 held next Saturday on A.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "held next Saturday on A"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "before the numbers arrive the counts already read 4, 6 and 0, and the picture comes once the day is in",
+    "criterion": 4,
+    "what_should_happen": "The moment the page first draws, before any numbers have arrived, the counts already show 4, 6 and 0 in their places. The small picture of Ground A's day is not there yet. It appears, with its booking, once the day has arrived.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "grounds",
+      "event types",
+      "held next Saturday on A"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "the picture shows Ground A's hours and a block with each booking's number",
+    "criterion": 5,
+    "what_should_happen": "Beside the heading a small picture of Ground A's next Saturday shows the ground's hours. Each booking that day is a block carrying its booking number, such as BK0001 and BK0002.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": []
+  },
+  {
+    "ticket": "F-01",
+    "test": "the picture is only a picture: nothing in it is a button or a link, and clicking a block does nothing",
+    "criterion": 5,
+    "what_should_happen": "The picture of the day is decoration only. Nothing in it is a button or a link, and clicking a booking's block leaves you on the home page with nothing opened.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": []
+  },
+  {
+    "ticket": "F-01",
+    "test": "under \"Who are you today?\" there is one card each for Sabu, Deepa and Anita",
+    "criterion": 6,
+    "what_should_happen": "Under the heading \"Who are you today?\" and its line about each person's screens there are exactly three cards. Each card has the person's initial, name, role, a line about what they do and \"Continue as\" with their name: Sabu the caretaker, Deepa the booking clerk and Anita the municipal officer.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Who are you today?",
+      "Each person sees their own screens. Everything they do changes the same planner.",
+      "Continue as {name}",
+      "Sabu",
+      "Caretaker",
+      "Looks after the four grounds. Reads each ground’s day: the bookings and the setup and teardown around them.",
+      "Deepa",
+      "Booking clerk",
+      "Takes the clubs’ calls. Requests slots, confirms them, cancels them and moves them.",
+      "Anita",
+      "Municipal officer",
+      "Answers for the complex. Reads every booking’s record."
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "criterion": 6,
+    "checked_by": "browser",
+    "reason": "The colour of each person's initial circle can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Sabu's card opens The day at /caretaker/day",
+    "criterion": 7,
+    "what_should_happen": "Clicking Sabu's card on the home page opens his screen, The day. The address becomes /caretaker/day.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as {name}",
+      "Sabu"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Deepa's card opens Book at /clerk/book",
+    "criterion": 8,
+    "what_should_happen": "Clicking Deepa's card opens her first screen, Book. The address becomes /clerk/book.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as {name}",
+      "Deepa"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "clicking Anita's card opens Records at /officer/records",
+    "criterion": 8,
+    "what_should_happen": "Clicking Anita's card opens her screen, Records. The address becomes /officer/records.",
+    "look_at": [
+      "src/pages/Welcome.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Continue as {name}",
+      "Anita"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "Tab reaches each card, and Enter on Anita's card opens /officer/records",
+    "criterion": 9,
+    "what_should_happen": "Without a mouse, pressing Tab moves through the page and reaches Sabu's, Deepa's and Anita's cards in turn. Pressing Enter on Anita's card opens /officer/records.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "Continue as {name}",
+      "Sabu",
+      "Deepa",
+      "Anita"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "test": "Enter on Sabu's card, reached with Tab, opens /caretaker/day",
+    "criterion": 9,
+    "what_should_happen": "Pressing Tab until Sabu's card is outlined and then Enter opens his first screen. The address becomes /caretaker/day.",
+    "look_at": [
+      "src/pages/Welcome.jsx"
+    ],
+    "exact_words": [
+      "Continue as {name}",
+      "Sabu"
+    ]
+  },
+  {
+    "ticket": "F-01",
+    "criterion": 10,
+    "checked_by": "browser",
+    "reason": "Where the picture sits, the cards stacking and the page not scrolling sideways at phone width need a real browser's layout."
+  }
+]
