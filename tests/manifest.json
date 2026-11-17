@@ -193,5 +193,331 @@
     "criterion": 10,
     "checked_by": "browser",
     "reason": "Where the picture sits, the cards stacking and the page not scrolling sideways at phone width need a real browser's layout."
+  },
+  {
+    "ticket": "F-02",
+    "test": "on the home page the header has the GroundBook logo with \"Deccan Sports Complex\" and no back arrow or person menu",
+    "criterion": 0,
+    "what_should_happen": "On the home page the header shows the GroundBook logo, which links home, with \"Deccan Sports Complex\" under the name. There is no back arrow and no person menu, because the home page belongs to nobody.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "GroundBook",
+      "Deccan Sports Complex",
+      "GroundBook home",
+      "Back to the home page"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "on Deepa's Book the back arrow sits before the logo and the person menu shows D, Deepa and Booking clerk",
+    "criterion": 1,
+    "what_should_happen": "On Deepa's Book a back arrow named \"Back to the home page\" comes before the logo in the header. On the right the person menu shows her initial D, \"Deepa\" and \"Booking clerk\".",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Back to the home page",
+      "GroundBook home",
+      "Deepa",
+      "Booking clerk"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 1,
+    "checked_by": "browser",
+    "reason": "The colour of the person's initial circle can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-02",
+    "test": "on Sabu's and Anita's screens the person menu shows their own initial, name and role",
+    "criterion": 1,
+    "what_should_happen": "On Sabu's The day and on Anita's Records the header has the back arrow too. Its person menu shows S, \"Sabu\" and \"Caretaker\" for Sabu, and A, \"Anita\" and \"Municipal officer\" for Anita.",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Back to the home page",
+      "Sabu",
+      "Caretaker",
+      "Anita",
+      "Municipal officer"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "the back arrow on a person's screen opens the home page",
+    "criterion": 2,
+    "what_should_happen": "On Deepa's Book, clicking the back arrow opens the home page. The address becomes /.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "Back to the home page"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "the logo on a person's screen opens the home page",
+    "criterion": 2,
+    "what_should_happen": "On Sabu's The day, clicking the GroundBook logo opens the home page. The address becomes /.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "GroundBook home"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "clicking the person menu opens \"View the planner as\" with Sabu, Deepa and Anita and their roles",
+    "criterion": 3,
+    "what_should_happen": "Clicking the closed person menu opens a list headed \"View the planner as\". It has exactly three people, in this order: Sabu (Caretaker), Deepa (Booking clerk) and Anita (Municipal officer).",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "View the planner as",
+      "Sabu",
+      "Caretaker",
+      "Deepa",
+      "Booking clerk",
+      "Anita",
+      "Municipal officer"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 3,
+    "checked_by": "browser",
+    "reason": "The tick beside the current person is a drawing that screen readers skip, so only a real browser shows it."
+  },
+  {
+    "ticket": "F-02",
+    "test": "in the open list the ticked person, Deepa on her own Book, is read as the current one, and only her",
+    "criterion": 3,
+    "what_should_happen": "The tick beside the current person is a drawing, so a screen reader is told in another way who is current. With Deepa's list open on her Book, Deepa is read as the current one, and Sabu and Anita are not.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "Sabu",
+      "Deepa",
+      "Anita"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "picking Anita on Deepa's Book closes the list, opens /officer/records and shows Anita in the header",
+    "criterion": 4,
+    "what_should_happen": "With the list open on Deepa's Book, picking Anita closes the list. Records opens at /officer/records and the person menu now shows Anita, the municipal officer, instead of Deepa.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "Anita",
+      "Municipal officer",
+      "Deepa"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "picking Sabu opens The day at /caretaker/day",
+    "criterion": 5,
+    "what_should_happen": "With the list open, picking Sabu closes it and opens The day. The address becomes /caretaker/day and the header shows Sabu.",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/data/personas.js"
+    ],
+    "exact_words": [
+      "Sabu"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "a click outside the list closes it and you stay where you were",
+    "criterion": 6,
+    "what_should_happen": "With the list open, clicking anywhere outside it closes the list. The page stays on Deepa's Book and the header still shows Deepa.",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/components/useDismiss.js"
+    ],
+    "exact_words": [
+      "Deepa"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "Esc closes the list and you stay where you were",
+    "criterion": 6,
+    "what_should_happen": "With the list open, pressing Esc closes it. The page stays on Deepa's Book and the header still shows Deepa.",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/components/useDismiss.js"
+    ],
+    "exact_words": [
+      "Deepa"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "on Deepa's Book the tabs Book and Bookings sit in the title row, and Book is the one she is on",
+    "criterion": 7,
+    "what_should_happen": "Deepa's title row has two tabs, \"Book\" and \"Bookings\", together named as Deepa's screens. On Book, the Book tab is marked as the screen she is on and the Bookings tab is not.",
+    "look_at": [
+      "src/components/SectionTabs.jsx",
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Book",
+      "Bookings",
+      "{name}'s screens"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 7,
+    "checked_by": "browser",
+    "reason": "That the current tab is filled with Deepa's colour can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-02",
+    "test": "clicking the Bookings tab opens /clerk/bookings and Bookings is now the one she is on",
+    "criterion": 8,
+    "what_should_happen": "On Book, clicking the \"Bookings\" tab opens Bookings at /clerk/bookings. Now the Bookings tab is the one marked as current, and Book is not.",
+    "look_at": [
+      "src/components/SectionTabs.jsx",
+      "src/pages/clerk/Bookings.jsx"
+    ],
+    "exact_words": [
+      "Book",
+      "Bookings",
+      "{name}'s screens"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "Sabu's The day and Anita's Records have no tabs",
+    "criterion": 9,
+    "what_should_happen": "Sabu and Anita each have only one screen. On The day and on Records there are no tabs, and no Book or Bookings link.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/pages/officer/Records.jsx"
+    ],
+    "exact_words": [
+      "Book",
+      "Bookings"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "the address /clerk opens Book and becomes /clerk/book",
+    "criterion": 10,
+    "what_should_happen": "Opening the short address /clerk takes Deepa straight to Book. The address becomes /clerk/book and the Book tab is the current one.",
+    "look_at": [
+      "src/App.jsx"
+    ],
+    "exact_words": [
+      "Book",
+      "{name}'s screens"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "/caretaker becomes /caretaker/day and /officer becomes /officer/records",
+    "criterion": 10,
+    "what_should_happen": "Opening /caretaker shows Sabu's The day at /caretaker/day. Opening /officer shows Anita's Records at /officer/records.",
+    "look_at": [
+      "src/App.jsx"
+    ],
+    "exact_words": [
+      "Sabu",
+      "Anita"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "an address the planner does not have, /pitch, opens the home page at /",
+    "criterion": 11,
+    "what_should_happen": "Opening an address the planner does not have, such as /pitch, opens the home page instead. The address becomes / and the header has no back arrow.",
+    "look_at": [
+      "src/App.jsx"
+    ],
+    "exact_words": [
+      "Who are you today?",
+      "Back to the home page"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 12,
+    "checked_by": "browser",
+    "reason": "The app's own scrollbar only shows on a page taller than the window, and the pretend browser has no heights, so dragging and clicking it need a real browser."
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 13,
+    "checked_by": "browser",
+    "reason": "Whether a page fits the window depends on real heights, which only a real browser has."
+  },
+  {
+    "ticket": "F-02",
+    "test": "Tab reaches the back arrow, the logo and the person menu in turn, and Enter opens the menu",
+    "criterion": 14,
+    "what_should_happen": "Without a mouse, Tab on Deepa's Book reaches the back arrow first, then the logo, then the person menu. Enter on the person menu opens the list \"View the planner as\".",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "Back to the home page",
+      "GroundBook home",
+      "Deepa",
+      "View the planner as"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "in the open menu Tab reaches each person, and Enter on Anita opens Records",
+    "criterion": 14,
+    "what_should_happen": "With the list open, Tab reaches Sabu, Deepa and Anita in turn, because each person is a button. Enter on Anita opens Records at /officer/records.",
+    "look_at": [
+      "src/components/Header.jsx"
+    ],
+    "exact_words": [
+      "Sabu",
+      "Deepa",
+      "Anita"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "test": "Esc closes the menu and puts the focus back on the person menu",
+    "criterion": 14,
+    "what_should_happen": "With the list open and the focus on Sabu, pressing Esc closes the list. The focus goes back to the person menu, so the keyboard carries on from there.",
+    "look_at": [
+      "src/components/Header.jsx",
+      "src/components/useDismiss.js"
+    ],
+    "exact_words": [
+      "Sabu",
+      "Deepa"
+    ]
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 15,
+    "checked_by": "browser",
+    "reason": "Hiding the place name and the person's name and role below laptop width is done by the window's width, which only a real browser has."
+  },
+  {
+    "ticket": "F-02",
+    "criterion": 16,
+    "checked_by": "browser",
+    "reason": "The header wrapping and the tabs scrolling sideways at phone width need a real browser's layout."
   }
 ]
