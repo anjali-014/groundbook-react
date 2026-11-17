@@ -519,5 +519,180 @@
     "criterion": 16,
     "checked_by": "browser",
     "reason": "The header wrapping and the tabs scrolling sideways at phone width need a real browser's layout."
+  },
+  {
+    "ticket": "F-03",
+    "test": "The day has \"Deccan Sports Complex · the planner\" over the title and four strips, Ground A to Ground D",
+    "criterion": 0,
+    "what_should_happen": "Sabu's page says \"Deccan Sports Complex · the planner\" above its title, \"The day\". Under it are exactly four strips, one for each ground, named \"Ground A\", \"Ground B\", \"Ground C\" and \"Ground D\".",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{place} · the planner",
+      "The day",
+      "Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "the strips are for next Saturday: a booking that day shows, one on another day does not",
+    "criterion": 0,
+    "what_should_happen": "The strips show next Saturday. A booking on Ground A next Saturday is drawn on its strip, while bookings on the Friday before or the Saturday after are not.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": [
+      "Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "on an empty Saturday each strip reads \"06:00–22:00 · 0 held\" with marks 06:00, 08:00 … 22:00",
+    "criterion": 1,
+    "what_should_happen": "With nothing booked, every strip's head reads \"06:00–22:00 · 0 held\". Along each strip the hour marks run every two hours, 06:00, 08:00, 10:00 and so on up to 22:00, with nothing at the odd hours.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "a League match 14:00–17:00 on Ground A is a block with \"BK0001\" and \"League match · 14:00–17:00\"",
+    "criterion": 2,
+    "what_should_happen": "A League match booked on Ground A from 14:00 to 17:00 is drawn as a block on Ground A's strip. The block carries \"BK0001\" and \"League match · 14:00–17:00\", and it is not on any other ground's strip.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{event} · {from}–{to}",
+      "Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "criterion": 2,
+    "checked_by": "browser",
+    "reason": "Where the block sits and how far its lighter edge stretches (to 13:20 and 17:30) are positions on the strip that only a real browser lays out."
+  },
+  {
+    "ticket": "F-03",
+    "test": "with that booking Ground A's head reads \"06:00–22:00 · 1 held\" and the other grounds still 0 held",
+    "criterion": 3,
+    "what_should_happen": "With the League match booked, Ground A's head reads \"06:00–22:00 · 1 held\". Ground B's head still reads 0 held, because the booking is not on it.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "several bookings on one ground read from left to right in the order they start",
+    "criterion": 4,
+    "what_should_happen": "Three bookings are made on Ground A in a muddled order: a practice at 17:50, a friendly at 07:00 and a league match at 12:00. On the strip their blocks read in the order they start, BK0002, BK0003 then BK0001, each with its own event and times, and the head says 3 held.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{event} · {from}–{to}",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "a cancelled booking stays on the strip but is not counted in \"held\"",
+    "criterion": 5,
+    "what_should_happen": "Ground A has a confirmed booking and a cancelled one. Both blocks stay on the strip, but the head says 1 held, because a cancelled booking holds nothing.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "criterion": 5,
+    "checked_by": "browser",
+    "reason": "The orange, teal and striped grey colours of the blocks can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-03",
+    "test": "under the strips the legend reads Requested, Confirmed, Cancelled and the line about the lighter edge",
+    "criterion": 6,
+    "what_should_happen": "Under the strips a legend names the three states, \"Requested\", \"Confirmed\" and \"Cancelled\". It ends with \"The lighter edge either side: the ground held for setup and teardown\".",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "Requested",
+      "Confirmed",
+      "Cancelled",
+      "The lighter edge either side: the ground held for setup and teardown"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "criterion": 6,
+    "checked_by": "browser",
+    "reason": "The colour beside each state in the legend can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-03",
+    "test": "before the days arrive the title is there and the strips are not; then each strip appears",
+    "criterion": 7,
+    "what_should_happen": "The moment The day first draws, its title is already there but no strip is. Each of the four strips appears once its ground's day has arrived.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "The day",
+      "Ground {ground}",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "a booking made while Sabu was away shows on The day when he comes back",
+    "criterion": 8,
+    "what_should_happen": "Sabu sees Ground A empty, goes back to the home page, and meanwhile a booking is made on Ground A. When he continues as Sabu again, The day shows the new block BK0001 and 1 held.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/hooks/useApi.jsx"
+    ],
+    "exact_words": [
+      "GroundBook home",
+      "Continue as {name}",
+      "Sabu",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "test": "a screen reader hears each block by number, event, times and state, and each strip by its ground",
+    "criterion": 9,
+    "what_should_happen": "Each strip is named for its ground, and each block is read out by its number, event, times and state. For example \"BK0001, League match, 14:00 to 17:00, Requested\", a confirmed practice and a cancelled friendly match.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{id}, {event}, {from} to {to}, {state}",
+      "Ground {ground}",
+      "Requested",
+      "Confirmed",
+      "Cancelled"
+    ]
+  },
+  {
+    "ticket": "F-03",
+    "criterion": 10,
+    "checked_by": "browser",
+    "reason": "Each strip keeping its length and scrolling sideways in its own box at phone width needs a real browser's layout."
   }
 ]

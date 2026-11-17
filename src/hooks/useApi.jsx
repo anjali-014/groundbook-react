@@ -1,7 +1,8 @@
 import { createContext, useEffect, useState } from 'react';
 import api from '../api.js';
+import { VENUE } from '../data/complex.js';
 
-// Every screen reads the planner through this hook.
+// Every screen reads the planner through these hooks.
 const DataVersion = createContext(null);
 
 export function DataProvider({ children }) {
@@ -22,4 +23,11 @@ export function useGet(path) {
         return () => { current = false; };
   }, [path]);
   return answer;
+}
+
+/** The event types' names by code, e.g. { league: 'League match' }, or null until they arrive. */
+export function useEventNames() {
+  const answer = useGet(`/venues/${VENUE.slug}/event-types`);
+  if (!answer) return null;
+  return Object.fromEntries((answer.status === 200 ? answer.body.eventTypes : []).map((t) => [t.code, t.name]));
 }

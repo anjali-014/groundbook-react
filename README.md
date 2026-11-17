@@ -8,7 +8,7 @@
 
 - [x] Ticket 1 · The front door
 - [x] Ticket 2 · Moving between people
-- [ ] Ticket 3 · The day
+- [x] Ticket 3 · The day
 - [ ] Ticket 4 · Another day, and what each event needs
 - [ ] Ticket 5 · A club asks for a slot
 - [ ] Ticket 6 · Pencilling it in

@@ -33,7 +33,7 @@ const day = useGet(`/venues/${VENUE.slug}/grounds/A/day?date=${nextSaturday(Date
           </div>
         </div>
       <div className="hero-art" aria-hidden="true">
-                <div className="hero-planner">{day?.status === 200 && <DayStrip day={day.body} />}</div>
+                          <div className="hero-planner">{day?.status === 200 && <DayStrip day={day.body} compact />}</div>
       </div>
       </section>
     
