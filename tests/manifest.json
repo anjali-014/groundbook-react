@@ -1306,5 +1306,237 @@
       "Write the start time in 24-hour form, like 09:00 or 14:00.",
       "Ground and event"
     ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "under the form \"Ground A that day\" shows Ground A's strip for the day in the Day box",
+    "criterion": 0,
+    "what_should_happen": "Under the form on Book is a section headed \"Ground A that day\". It shows Ground A's strip for the day in the Day box, with the practice already booked there and 1 held.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "Ground {ground} that day",
+      "Ground {ground}",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "picking Ground B makes it \"Ground B that day\" with Ground B's strip",
+    "criterion": 1,
+    "what_should_happen": "When Deepa picks Ground B in the form, the section under it is headed \"Ground B that day\". It shows Ground B's strip with its booking, and Ground A's strip is gone.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Ground {name}",
+      "Ground {ground} that day",
+      "Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "picking another day in the Day box shows Ground A's strip for that day",
+    "criterion": 1,
+    "what_should_happen": "A practice is booked on Ground A on 14 November, so next Saturday's strip does not show it. When Deepa puts 14 November in the Day box, the strip under the form shows that day with BK0001 on it.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "Ground {ground} that day",
+      "Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "an accepted slot turns the panel into the two steps, the bar for the day and the booking card",
+    "criterion": 2,
+    "what_should_happen": "With the form as it opens, pressing Request is accepted. The panel shows step 1 \"Pencil it on Ground A\" and step 2 \"Ground held\", a bar headed \"Ground A · Saturday 7 November\", and a card with \"BK0001\", \"League match · 14:00–17:00\" and \"Deccan Gymkhana\".",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx",
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Request",
+      "Pencil it on {ground}",
+      "Ground held",
+      "{ground} · {date}",
+      "{event} · {from}–{to}",
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}",
+      "Deccan Gymkhana",
+      "Request a slot"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "criterion": 2,
+    "checked_by": "browser",
+    "reason": "The dashed box over 14:00–17:00 on the bar is a drawing with no words, which only a real browser shows."
+  },
+  {
+    "ticket": "F-06",
+    "test": "the first step's caption says \"Drag BK0001 onto its slot\" and \"Or tap the booking. The dashed box is 14:00–17:00.\"",
+    "criterion": 3,
+    "what_should_happen": "While the first step is showing, its caption says \"Drag BK0001 onto its slot\". Under it: \"Or tap the booking. The dashed box is 14:00–17:00.\".",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Drag {id} onto its slot",
+      "Or tap the booking. The dashed box is {from}–{to}."
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "as soon as the slot is accepted BK0001 is on \"Ground A that day\" and its head says 1 held",
+    "criterion": 4,
+    "what_should_happen": "Before the request Ground A's strip under the form says 0 held. As soon as the slot is accepted, and before it is pencilled in, the new block BK0001 is on the strip and its head says 1 held.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/hooks/useApi.jsx"
+    ],
+    "exact_words": [
+      "Ground {ground}",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "criterion": 4,
+    "checked_by": "browser",
+    "reason": "The lighter edge round the new block is a drawing on the strip, which only a real browser lays out."
+  },
+  {
+    "ticket": "F-06",
+    "test": "while the first step is showing every box, button and the drop-down of the form is locked",
+    "criterion": 5,
+    "what_should_happen": "While the booking waits to be pencilled in, the form cannot be changed. The Day box, the four ground buttons, the drop-down, the From, To and Club boxes and the Request button are all locked.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "Ground {name}",
+      "Event type",
+      "From",
+      "To",
+      "Club",
+      "Request"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "criterion": 6,
+    "checked_by": "browser",
+    "reason": "Dragging the card over the bar and letting go is the browser's own drag and drop, which the pretend browser does not have; the tap that does the same is tested."
+  },
+  {
+    "ticket": "F-06",
+    "test": "tapping or clicking the card puts BK0001 in its slot and the card is gone",
+    "criterion": 7,
+    "what_should_happen": "Instead of dragging, Deepa clicks the booking card. The card leaves the tray and its caption goes, and BK0001 now sits in its slot on the bar.",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}",
+      "Drag {id} onto its slot"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "the next moment the caption says \"Holding the ground…\" and step 1 is ticked",
+    "criterion": 8,
+    "what_should_happen": "Right after the card goes into its slot the caption says \"Holding the ground…\". Step 1 no longer shows its number, because it is ticked, while step 2 still waits with its number.",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Holding the ground…",
+      "Pencil it on {ground}",
+      "Ground held",
+      "OK, next request"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "criterion": 8,
+    "checked_by": "browser",
+    "reason": "The lighter band spreading from 13:20 to 17:30 either side of the slot is a drawing, which only a real browser shows."
+  },
+  {
+    "ticket": "F-06",
+    "test": "about a second later it says \"Ground A is held 13:20–17:30\", until when to confirm, and shows \"OK, next request\"",
+    "criterion": 9,
+    "what_should_happen": "About a second after the card goes in, step 2 is ticked and the panel says \"Ground A is held 13:20–17:30\". It adds that the hold lapses unless confirmed by Wednesday 4 November, 13:43, 24 hours after the request, and an \"OK, next request\" button appears.",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "{ground} is held {from}–{to}",
+      "The match plus its setup and teardown. Confirm it by {date}, {time}, or the hold lapses.",
+      "Ground held",
+      "Holding the ground…",
+      "OK, next request"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "\"OK, next request\" brings back \"Request a slot\" and unlocks the form, still holding what she typed",
+    "criterion": 10,
+    "what_should_happen": "Deepa requests Ground B, Practice, 09:00 to 10:00, pencils it in and presses \"OK, next request\". The panel says \"Request a slot\" again and the form is unlocked, still showing Ground B, Practice, 09:00, 10:00 and the club.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Ground {name}",
+      "Event type",
+      "Practice",
+      "From",
+      "To",
+      "Request",
+      "OK, next request",
+      "Request a slot",
+      "Club",
+      "Deccan Gymkhana"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "by keyboard: Tab to the card and Enter puts it in its slot, then \"OK, next request\" has the focus",
+    "criterion": 11,
+    "what_should_happen": "Without a mouse, Tab reaches the booking card and Enter puts it in its slot. When the hold has spread, \"OK, next request\" already has the focus, so Enter goes on to the next request.",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}",
+      "Holding the ground…",
+      "OK, next request",
+      "Request a slot"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "test": "on a phone a finger tap on the card puts it in its slot as a drag does",
+    "criterion": 12,
+    "what_should_happen": "On a phone nothing can be dragged, so a finger tap on the card does the same job. The card goes into its slot and the caption says \"Holding the ground…\".",
+    "look_at": [
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}",
+      "Holding the ground…"
+    ]
+  },
+  {
+    "ticket": "F-06",
+    "criterion": 12,
+    "checked_by": "browser",
+    "reason": "The panel sitting under the form at phone width needs a real browser's layout."
   }
 ]

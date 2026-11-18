@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import api from '../../api.js';
 import Dropdown from '../../components/Dropdown.jsx';
 import Icon from '../../components/Icon.jsx';
 import Problem from '../../components/Problem.jsx';
@@ -8,11 +7,13 @@ import { useDate } from '../../components/DateStepper.jsx';
 import { VENUE } from '../../data/complex.js';
 import { instant, longDate, openPicker } from '../../data/days.js';
 import { fieldText } from '../../data/messages.js';
-import { useGet } from '../../hooks/useApi.jsx';
+import { useGet, usePost } from '../../hooks/useApi.jsx';
+import { GroundDay } from '../caretaker/Day.jsx';
+import PencilIn from './PencilIn.jsx';
 
-/** The answer to "request a slot": why not, when it is refused. */
-function RequestResult({ answer }) {
-  if (!answer || answer.status === 201) {
+/** The answer to "request a slot": pencil it on the ground's day and see the hold, or why not. */
+function RequestResult({ answer, club, grounds, types, onNext }) {
+  if (!answer) {
     return (
       <div className="result result-idle">
         <Icon name="grid" size={28} />
@@ -21,14 +22,20 @@ function RequestResult({ answer }) {
       </div>
     );
   }
+    if (answer.status === 201) {
+    const b = answer.body;
+    return <PencilIn key={b.bookingId} booking={b} ground={grounds.find((g) => g.ground === b.ground)}
+      eventName={types.find((t) => t.code === b.event)?.name ?? ''} club={club} onDone={onNext} />;
+  }
   return <div className="result result-no"><Problem answer={answer} /></div>;
 }
 
 /**
  *  Deepa's Book screen: POST /bookings with the ground (GET …/grounds), the event type (GET …/event-types), the
- * interval and the club.
+ * interval and the club. The chosen ground's day is drawn underneath.
  */
 export default function Book() {
+  const post = usePost();
   const [date] = useDate();
   const [day, setDay] = useState(date);
   const [ground, setGround] = useState('A');
@@ -37,6 +44,7 @@ export default function Book() {
   const [to, setTo] = useState('17:00');
   const [club, setClub] = useState('Deccan Gymkhana');
   const [answer, setAnswer] = useState(null);
+  const [sentClub, setSentClub] = useState('');
   const groundsAnswer = useGet(`/venues/${VENUE.slug}/grounds`);
   const types = useGet(`/venues/${VENUE.slug}/event-types`);
   const grounds = groundsAnswer?.status === 200 ? groundsAnswer.body.grounds : [];
@@ -48,6 +56,7 @@ export default function Book() {
   const dayWords = fieldText(errors, ['date']);
   const timeWords = fieldText(errors, ['from', 'to']);
   const clubWords = fieldText(errors, ['club']);
+  const pencilling = answer?.status === 201;
 
   async function request(e) {
     e.preventDefault();
@@ -59,7 +68,9 @@ export default function Book() {
     const body = { ground, event, club };
     if (from) body.from = instant(day, from);
     if (to) body.to = instant(day, to);
-    setAnswer(await api.post('/bookings', body));
+        const result = await post('/bookings', body);
+    setSentClub(club);
+    setAnswer(result);
   }
 
   return (
@@ -73,8 +84,8 @@ export default function Book() {
       </div>
 
       <div className="split">
-        <form className="card form" onSubmit={request} noValidate>
-          <fieldset className="form-fields">
+          <form className={`card form${pencilling ? ' is-locked' : ''}`} onSubmit={request} noValidate>
+          <fieldset className="form-fields" disabled={pencilling}>
             <div className="field">
               <label className="field-label" htmlFor="bk-date"><span className="step-no">1</span> Day</label>
               <div className={`input-wrap${bad.has('date') ? ' has-error' : ''}`}><input id="bk-date" onClick={openPicker} className="input mono" type="date" value={day} onChange={(e) => { setDay(e.target.value); setAnswer(null); }} aria-invalid={bad.has('date')} /></div>
@@ -118,9 +129,13 @@ export default function Book() {
         </form>
 
         <div className="result-slot">
-          <RequestResult answer={answer} />
+        <RequestResult answer={answer} club={sentClub} grounds={grounds} types={list} onNext={() => setAnswer(null)} />
         </div>
       </div>
+      <section className="list-section" aria-label={day ? `Ground ${ground} on ${longDate(day)}` : `Ground ${ground}`}>
+        <h2 className="section-title">Ground {ground} that day</h2>
+        <div className="planner"><GroundDay ground={ground} date={day} /></div>
+      </section>
     </div>
   );
 }
