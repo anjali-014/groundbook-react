@@ -9,7 +9,7 @@ import { useEventNames } from '../hooks/useApi.jsx';
  * (from GET …/events), never its code.
  * picture: each block shows its booking number.
  */
-export default function DayStrip({ day, compact = false}) {
+export default function DayStrip({ day, onPick, selected, compact = false}) {
   const open = minutesOf(day.opens);
   const close = minutesOf(day.closes);
     const span = close - open;
@@ -38,13 +38,15 @@ export default function DayStrip({ day, compact = false}) {
             const ht = clamp(pos(b.groundHeldTo));
             const f = clamp(pos(b.from));
             const t = clamp(pos(b.to));
+            const Tag = onPick ? 'button' : 'span';
                         return (
-          <span key={id} className={`block is-${b.state}`} style={{ left: `${hf}%`, width: `${ht - hf}%`, '--i': i }} aria-label={`${id}, ${names[b.event] ?? ''}, ${hhmm(b.from)} to ${hhmm(b.to)}, ${stateName(b.state)}`}>
+         <Tag key={id} type={onPick ? 'button' : undefined} onClick={onPick ? () => onPick(id) : undefined}
+                className={`block is-${b.state}${selected === id ? ' is-selected' : ''}`} style={{ left: `${hf}%`, width: `${ht - hf}%`, '--i': i }} aria-label={`${id}, ${names[b.event] ?? ''}, ${hhmm(b.from)} to ${hhmm(b.to)}, ${stateName(b.state)}`}>
           <span className="block-match" style={{ left: `${((f - hf) / Math.max(0.0001, ht - hf)) * 100}%`, width: `${((t - f) / Math.max(0.0001, ht - hf)) * 100}%` }}>
                   <span className="block-label mono">{id}</span>
                   {!compact && <span className="block-note">{names[b.event]} · {hhmm(b.from)}–{hhmm(b.to)}</span>}
                 </span>
-                </span>
+                            </Tag>
             );
               })}
                 </div>

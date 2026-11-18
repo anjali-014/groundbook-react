@@ -694,5 +694,228 @@
     "criterion": 10,
     "checked_by": "browser",
     "reason": "Each strip keeping its length and scrolling sideways in its own box at phone width needs a real browser's layout."
+  },
+  {
+    "ticket": "F-04",
+    "test": "the title row says \"Saturday 7 November\" between the buttons The day before and The day after",
+    "criterion": 0,
+    "what_should_happen": "On The day, the title row shows the day in words, \"Saturday 7 November\" for next Saturday. It sits between two arrow buttons named \"The day before\" and \"The day after\".",
+    "look_at": [
+      "src/components/DateStepper.jsx",
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "The day before",
+      "The day after"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "The day after shows Sunday 8 November, its bookings, and ?date=2026-11-08 in the address",
+    "criterion": 1,
+    "what_should_happen": "From Saturday 7 November, pressing \"The day after\" makes the date read \"Sunday 8 November\". The strips show that Sunday's bookings instead of Saturday's, and the address ends in ?date=2026-11-08.",
+    "look_at": [
+      "src/components/DateStepper.jsx",
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "The day after"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "The day before on Sunday 8 November goes back to Saturday 7 November",
+    "criterion": 2,
+    "what_should_happen": "On Sunday 8 November, pressing \"The day before\" brings back Saturday 7 November. The address no longer names 8 November, and Saturday's booking is on its strip again.",
+    "look_at": [
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": [
+      "The day before"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "on a Sunday the strips run 07:00–20:00, not 06:00–22:00",
+    "criterion": 3,
+    "what_should_happen": "The grounds keep shorter hours on Sundays. After stepping to Sunday every strip's head reads \"07:00–20:00 · 0 held\", and 06:00–22:00 is nowhere on the page.",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "The day after",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "the address ?date=2026-11-14 shows Saturday 14 November, and opening it again keeps it",
+    "criterion": 4,
+    "what_should_happen": "Opening /caretaker/day?date=2026-11-14 shows Saturday 14 November. Opening the same address again, as a refresh does, still shows that day with its booking.",
+    "look_at": [
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": []
+  },
+  {
+    "ticket": "F-04",
+    "test": "a day that does not exist, ?date=2026-13-45, shows next Saturday",
+    "criterion": 5,
+    "what_should_happen": "An address with a day that does not exist, such as ?date=2026-13-45, is not a real day. The day falls back to next Saturday, Saturday 7 November, with its booking on the strip.",
+    "look_at": [
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": []
+  },
+  {
+    "ticket": "F-04",
+    "test": "the row under the title has the six event types, each with its minutes before and after",
+    "criterion": 6,
+    "what_should_happen": "Under the title, a row named \"Event types and their buffers\" has exactly six chips. Each one gives the event type and its setup and teardown minutes, from Practice \"20 before · 20 after\" to School sports day \"120 before · 120 after\".",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "Event types and their buffers",
+      "Practice",
+      "Friendly match",
+      "League match",
+      "Athletics meet",
+      "Tournament",
+      "School sports day",
+      "{setup} before · {teardown} after"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "clicking BK0001 opens a panel with \"Booking\" over \"BK0001\" and the booking's card",
+    "criterion": 7,
+    "what_should_happen": "Clicking the block for BK0001, a League match from 14:00 to 17:00 on Ground A, opens a panel with \"Booking\" over \"BK0001\". The card in it says \"Saturday 7 November · Ground A\", BK0001 and its state \"Requested\", then Event League match, Slot 14:00–17:00 and Ground held 13:20–17:30.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "{id}, {event}, {from} to {to}, {state}",
+      "Booking",
+      "{date} · Ground {ground}",
+      "Requested",
+      "Event",
+      "Slot",
+      "Ground held"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "criterion": 7,
+    "checked_by": "browser",
+    "reason": "The page dimming and the panel sliding in from the right can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-04",
+    "criterion": 8,
+    "checked_by": "browser",
+    "reason": "The outline round the block that was opened is a drawing on the strip, which only a real browser shows."
+  },
+  {
+    "ticket": "F-04",
+    "test": "✕ (Close) closes the panel and the strip is as it was",
+    "criterion": 9,
+    "what_should_happen": "With the panel open, pressing ✕, the button named \"Close\", closes it. The block is back on Ground A's strip and the head still reads 1 held.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "Close",
+      "{id}, {event}, {from} to {to}, {state}",
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "Esc closes the panel",
+    "criterion": 9,
+    "what_should_happen": "With the panel open, pressing Esc closes it as ✕ does. The block is still there on the strip.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "criterion": 9,
+    "checked_by": "browser",
+    "reason": "The dimmed cover lies over the page only in a real browser's layout; in the pretend browser a click lands on the part named, not on the cover, so a click outside the panel is checked there."
+  },
+  {
+    "ticket": "F-04",
+    "test": "the panel's head with the booking number is there at once, and the card follows when the booking arrives",
+    "criterion": 10,
+    "what_should_happen": "The moment a block is clicked, the panel opens with its head, \"Booking\" over \"BK0001\". The card with the times is not there yet. It appears as soon as the booking has arrived.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Booking",
+      "Ground held"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "Tab reaches the two arrow buttons and then the blocks; Enter on a block opens it with the focus on ✕",
+    "criterion": 11,
+    "what_should_happen": "Without a mouse, Tab reaches \"The day before\", then \"The day after\", then each block in turn. Enter on BK0001's block opens its panel with the focus on the ✕ button.",
+    "look_at": [
+      "src/components/DateStepper.jsx",
+      "src/components/DayStrip.jsx",
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "The day before",
+      "The day after",
+      "{id}, {event}, {from} to {to}, {state}",
+      "Booking",
+      "Close"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "Enter on ✕ closes the panel and the focus goes back to the block",
+    "criterion": 11,
+    "what_should_happen": "After opening a block with Enter, the focus is on ✕. Pressing Enter again closes the panel, and the focus is back on the block that opened it.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "Close",
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "test": "Esc closes the panel and the focus goes back to the block",
+    "criterion": 11,
+    "what_should_happen": "After opening a block with Enter, pressing Esc closes the panel. The focus goes back to the block, so the keyboard carries on from there.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-04",
+    "criterion": 12,
+    "checked_by": "browser",
+    "reason": "The chips wrapping onto more lines below laptop width, or scrolling on one line when wide, depends on the window's width."
+  },
+  {
+    "ticket": "F-04",
+    "criterion": 13,
+    "checked_by": "browser",
+    "reason": "The panel taking the whole width and the day picker moving under the title at phone width need a real browser's layout."
   }
 ]
