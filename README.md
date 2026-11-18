@@ -12,7 +12,7 @@
 - [x] Ticket 4 · Another day, and what each event needs
 - [x] Ticket 5 · A club asks for a slot
 - [x] Ticket 6 · Pencilling it in
-- [ ] Ticket 7 · When the day says no
+- [x] Ticket 7 · When the day says no
 - [ ] Ticket 8 · The clerk's bookings
 - [ ] Ticket 9 · Moving a booking
 - [ ] Ticket 10 · The officer's records

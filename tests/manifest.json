@@ -1538,5 +1538,148 @@
     "criterion": 12,
     "checked_by": "browser",
     "reason": "The panel sitting under the form at phone width needs a real browser's layout."
+  },
+  {
+    "ticket": "F-07",
+    "test": "Practice 17:00–18:00 next to BK0001 is refused: \"With the buffers, it clashes\", naming BK0001 held 13:20–17:30",
+    "criterion": 0,
+    "what_should_happen": "Ground A already has BK0001, a League match that holds the ground 13:20–17:30. When Deepa asks for a Practice from 17:00 to 18:00, the panel says \"With the buffers, it clashes\" and \"It overlaps BK0001 (held 13:20–17:30). On paper the times may not touch; the setup and teardown do.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js",
+      "src/components/Problem.jsx"
+    ],
+    "exact_words": [
+      "With the buffers, it clashes",
+      "It overlaps {list}. On paper the times may not touch; the setup and teardown do.",
+      "{id} (held {from}–{to})"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "test": "the refused slot is drawn on \"Ground A that day\" as a block labelled \"refused\"",
+    "criterion": 1,
+    "what_should_happen": "Before the request there is no red block on Ground A's strip under the form. After the clash is refused, a block labelled \"refused\" is drawn on the strip, beside BK0001's own block.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "refused"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "criterion": 1,
+    "checked_by": "browser",
+    "reason": "The red stripes, where the red block sits (16:40 to 18:20) and BK0001's red outline are colours and positions that only a real browser shows.",
+    "what_should_happen": ""
+  },
+  {
+    "ticket": "F-07",
+    "test": "after the refusal Ground A's head still says 1 held",
+    "criterion": 2,
+    "what_should_happen": "Nothing was booked by the refused request. Ground A's head still says \"06:00–22:00 · 1 held\" and there is no second booking on the strip. First the refusal shows with \"With the buffers, it clashes\" and Ground A's strip marks the slot \"refused\".",
+    "look_at": [
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{opens}–{closes} · {count} held"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "test": "Practice 17:50–19:00, whose setup starts exactly as BK0001's teardown ends, is accepted",
+    "criterion": 3,
+    "what_should_happen": "A Practice that clashes with BK0001's buffers is refused first. Then Practice 17:50–19:00 is asked for: its setup starts exactly as BK0001's teardown ends, so it does not clash. It is accepted: the new booking BK0002 waits to be pencilled in on Ground A, with no refusal and no red block.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}",
+      "With the buffers, it clashes",
+      "refused"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "test": "a slot whose setup and teardown reach two bookings names both, each with the time it holds",
+    "criterion": 4,
+    "what_should_happen": "Ground A has BK0001 held 13:20–17:30 and BK0002 held 17:30–19:20. A Friendly match from 16:00 to 18:00 reaches both, so the panel says \"It overlaps BK0001 (held 13:20–17:30), BK0002 (held 17:30–19:20).\" before the rest of the sentence, and the red block is drawn.",
+    "look_at": [
+      "src/data/messages.js",
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "With the buffers, it clashes",
+      "It overlaps {list}. On paper the times may not touch; the setup and teardown do.",
+      "{id} (held {from}–{to})",
+      "refused",
+      "Friendly match"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "criterion": 4,
+    "checked_by": "browser",
+    "reason": "Both clashing blocks being outlined in red is a colour, which only a real browser shows.",
+    "what_should_happen": ""
+  },
+  {
+    "ticket": "F-07",
+    "test": "changing the day, the ground, the event, the From time or the To time takes the red block and the refusal away",
+    "criterion": 5,
+    "what_should_happen": "After a clash is refused, Deepa changes the From time, then the To time, the event, the ground and the day, asking again in between. Each change takes away the red block and the refusal at once.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "refused",
+      "With the buffers, it clashes",
+      "From",
+      "To",
+      "Event type",
+      "Friendly match",
+      "Ground {name}",
+      "Day",
+      "Request"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "test": "a slot refused for another reason, a day in the past, draws no red block",
+    "criterion": 6,
+    "what_should_happen": "A clash first draws the red block on the strip. Then a day that has already gone is asked for, and it is refused with \"Nobody books the past.\". Only the panel says why, and no red block is drawn.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Nobody books the past",
+      "refused",
+      "The refused request",
+      "Day",
+      "Request"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "test": "a screen reader hears the red block as \"The refused request\", and the refusal is announced",
+    "criterion": 7,
+    "what_should_happen": "The refusal in the panel is an announcement, so a screen reader reads it as soon as it appears. The red block on the strip is named \"The refused request\".",
+    "look_at": [
+      "src/components/Problem.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "With the buffers, it clashes",
+      "The refused request"
+    ]
+  },
+  {
+    "ticket": "F-07",
+    "criterion": 8,
+    "checked_by": "browser",
+    "reason": "The panel sitting under the form and the strip scrolling sideways at phone width need a real browser's layout.",
+    "what_should_happen": ""
   }
 ]

@@ -1,7 +1,7 @@
 // The refusals the backend gives, in the words of the person who meets them. The backend gives one shape (type,
 // title, status, detail, and its extras); this builds the screen's own sentence from the type and the extras, never
 // from the backend's wording, and says what to do next.
-
+const at = (iso) => (iso ? iso.slice(11, 16) : '');
 /** What each box is called when the clerk is told to fill it in or fix it. */
 const BOXES = {
   from: { missing: 'Type the time it starts, like 14:00.', wrong: 'Write the start time in 24-hour form, like 09:00 or 14:00.' },
@@ -51,6 +51,10 @@ export function explain(answer) {
       return { title: 'Something in the form is not right', text: fieldText(body.errors) || 'Check what you typed.' };
     case '/errors/bad-interval':
       return { title: 'That slot cannot be booked', text: badSlot(body) };
+       case '/errors/overlap': {
+        const names = (body.clashesWith ?? []).map((c) => `${c.bookingId} (held ${at(c.groundHeldFrom)}–${at(c.groundHeldTo)})`);
+        return { title: 'With the buffers, it clashes', text: `It overlaps ${names.join(', ')}. On paper the times may not touch; the setup and teardown do.` };
+    }
           case '/errors/no-such-ground': return { title: 'No such ground', text: 'That ground is not here. The grounds are A to D.' };
     case '/errors/no-such-event-type': return { title: 'No such event type', text: 'Pick one of the event types on the list.' };
     case '/errors/no-such-venue': return { title: 'That complex is not here', text: 'This planner is the Deccan Sports Complex only.' };

@@ -8,11 +8,11 @@ import { STATES, VENUE } from '../../data/complex.js';
 import { useGet } from '../../hooks/useApi.jsx';
 
 /** One ground's strip for the day: GET /venues/deccan/grounds/{ground}/day?date=. */
-export function GroundDay({ ground, date, onPick, selected }) {
+export function GroundDay({ ground, date, onPick, selected, ghost }) {
   const answer = useGet(`/venues/${VENUE.slug}/grounds/${ground}/day?date=${date}`);
       if (!answer) return null;
   if (answer.status !== 200) return <Problem answer={answer} compact />;
-    return <DayStrip day={answer.body} onPick={onPick} selected={selected} />;
+      return <DayStrip day={answer.body} onPick={onPick} selected={selected} ghost={ghost} />;
 }
 
 /**

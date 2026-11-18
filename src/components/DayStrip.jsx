@@ -5,11 +5,13 @@ import { useEventNames } from '../hooks/useApi.jsx';
 /**
  * One ground's day (GET /venues/deccan/grounds/{ground}/day) as a strip from opening to closing. Each booking is a
   * block for its booked time with a lighter shadow either side: the ground held for setup and teardown. The colour
- * says the state: requested, confirmed, or cancelled (greyed; it holds nothing). Each block names its events
+  * says the state: requested, confirmed, or cancelled (greyed; it holds nothing). `ghost` draws a request that was
+ * refused, in red, over the strip, and marks the bookings it clashes with in red too, so both shadows show. Each block
+ * names its occasion (from GET …/occasions), never its code.
  * (from GET …/events), never its code.
  * picture: each block shows its booking number.
  */
-export default function DayStrip({ day, onPick, selected, compact = false}) {
+export default function DayStrip({ day, onPick, selected, ghost, compact = false }) {
   const open = minutesOf(day.opens);
   const close = minutesOf(day.closes);
     const span = close - open;
@@ -41,7 +43,7 @@ export default function DayStrip({ day, onPick, selected, compact = false}) {
             const Tag = onPick ? 'button' : 'span';
                         return (
          <Tag key={id} type={onPick ? 'button' : undefined} onClick={onPick ? () => onPick(id) : undefined}
-                className={`block is-${b.state}${selected === id ? ' is-selected' : ''}`} style={{ left: `${hf}%`, width: `${ht - hf}%`, '--i': i }} aria-label={`${id}, ${names[b.event] ?? ''}, ${hhmm(b.from)} to ${hhmm(b.to)}, ${stateName(b.state)}`}>
+         className={`block is-${b.state}${selected === id ? ' is-selected' : ''}${ghost?.clashIds?.includes(id) ? ' is-clash' : ''}`} style={{ left: `${hf}%`, width: `${ht - hf}%`, '--i': i }} aria-label={`${id}, ${names[b.event] ?? ''}, ${hhmm(b.from)} to ${hhmm(b.to)}, ${stateName(b.state)}`}>
           <span className="block-match" style={{ left: `${((f - hf) / Math.max(0.0001, ht - hf)) * 100}%`, width: `${((t - f) / Math.max(0.0001, ht - hf)) * 100}%` }}>
                   <span className="block-label mono">{id}</span>
                   {!compact && <span className="block-note">{names[b.event]} · {hhmm(b.from)}–{hhmm(b.to)}</span>}
@@ -49,6 +51,11 @@ export default function DayStrip({ day, onPick, selected, compact = false}) {
                             </Tag>
             );
               })}
+          {ghost && (
+            <span className="block is-ghost" role="img" style={{ left: `${clamp(pos(ghost.heldFrom))}%`, width: `${clamp(pos(ghost.heldTo)) - clamp(pos(ghost.heldFrom))}%` }} aria-label="The refused request">
+              <span className="block-label mono">refused</span>
+            </span>
+          )}
                 </div>
       </div>
         </section>
