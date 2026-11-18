@@ -917,5 +917,394 @@
     "criterion": 13,
     "checked_by": "browser",
     "reason": "The panel taking the whole width and the day picker moving under the title at phone width need a real browser's layout."
+  },
+  {
+    "ticket": "F-05",
+    "test": "Book opens titled \"Book\" under \"Deccan Sports Complex · Saturday 7 November\", filled in with a sensible slot",
+    "criterion": 0,
+    "what_should_happen": "Deepa's Book is titled \"Book\", with \"Deccan Sports Complex · Saturday 7 November\" above it for next Saturday. The form is already filled in: the Day box on 7 November, \"Ground A\" pressed, \"League match\", From 14:00 to 17:00 and the club \"Deccan Gymkhana\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Book",
+      "{place} · {date}",
+      "Day",
+      "Ground {name}",
+      "Event type",
+      "League match",
+      "From",
+      "To",
+      "Club",
+      "Deccan Gymkhana"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "the form has four numbered steps, Day, Ground and event, From and to, Club, and a Request button",
+    "criterion": 1,
+    "what_should_happen": "The form reads as four numbered steps: 1 \"Day\", 2 \"Ground and event\", 3 \"From and to\" and 4 \"Club\". Under them is a \"Request\" button.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "Ground and event",
+      "From and to",
+      "Club",
+      "Request"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "the help lines under the times and under the club say what goes in them",
+    "criterion": 2,
+    "what_should_happen": "Under the two time boxes a help line says \"The match itself, 24-hour (14:00). The setup and teardown are added from the event type.\". Under the club it says \"Kept on the booking; never in its record.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "The match itself, 24-hour (14:00). The setup and teardown are added from the event type.",
+      "Kept on the booking; never in its record."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "before anything is sent the panel says \"Request a slot\" and how the ground is held",
+    "criterion": 3,
+    "what_should_happen": "Before Deepa sends anything, the panel beside the form says \"Request a slot\". Under it: \"The ground is held with its setup before and its teardown after, for as long as the hold lasts.\", and no refusal is shown.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Request a slot",
+      "The ground is held with its setup before and its teardown after, for as long as the hold lasts."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "picking Saturday 14 November in the Day box changes the line above the title",
+    "criterion": 4,
+    "what_should_happen": "When Deepa puts Saturday 14 November in the Day box, the box holds that day. The line above the title then says \"Deccan Sports Complex · Saturday 14 November\" instead of 7 November.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "{place} · {date}"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "criterion": 4,
+    "checked_by": "browser",
+    "reason": "The calendar that a click anywhere in the Day box opens is drawn by the browser itself, which the pretend browser does not have."
+  },
+  {
+    "ticket": "F-05",
+    "test": "the address /clerk/book?date=2026-11-14 starts the Day box on 14 November",
+    "criterion": 5,
+    "what_should_happen": "Opening /clerk/book?date=2026-11-14 starts the Day box on 14 November. The line above the title says Saturday 14 November.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "{place} · {date}"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "clicking \"Ground C\" presses Ground C and lets go of Ground A",
+    "criterion": 6,
+    "what_should_happen": "The four ground buttons press one at a time. Clicking \"Ground C\" makes it the pressed one, and \"Ground A\" is no longer pressed.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Ground {name}"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "the event-type drop-down lists the six types with their minutes, League match ticked, and a pick closes it",
+    "criterion": 7,
+    "what_should_happen": "Clicking the drop-down that shows \"League match\" opens a list of the six event types, each with its minutes under it, such as \"40 min before · 30 after\", and League match is the ticked one. Clicking \"Practice\" closes the list and the drop-down now shows \"Practice\".",
+    "look_at": [
+      "src/components/Dropdown.jsx",
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Event type",
+      "{setup} min before · {teardown} after",
+      "League match",
+      "Practice"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "a click outside the open list closes it and the choice stays League match",
+    "criterion": 8,
+    "what_should_happen": "With the list of event types open, Deepa clicks somewhere else on the page. The list closes and the drop-down still shows League match.",
+    "look_at": [
+      "src/components/Dropdown.jsx"
+    ],
+    "exact_words": [
+      "Event type",
+      "League match",
+      "Book"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Esc closes the open list and the choice stays League match",
+    "criterion": 8,
+    "what_should_happen": "With the list of event types open, pressing Esc closes it. The drop-down still shows League match.",
+    "look_at": [
+      "src/components/Dropdown.jsx"
+    ],
+    "exact_words": [
+      "Event type",
+      "League match"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Request with From empty says \"Type the time it starts, like 14:00.\" under the times and in the panel",
+    "criterion": 9,
+    "what_should_happen": "Deepa empties the From box and presses Request. The help line under the times is replaced by \"Type the time it starts, like 14:00.\", and the panel says \"Something in the form is not right\" with the same words.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js",
+      "src/components/Problem.jsx"
+    ],
+    "exact_words": [
+      "From",
+      "Request",
+      "Something in the form is not right",
+      "Type the time it starts, like 14:00.",
+      "Request a slot"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "criterion": 9,
+    "checked_by": "browser",
+    "reason": "The red outline round the From box and the red colour of the line are colours, which only a real browser shows."
+  },
+  {
+    "ticket": "F-05",
+    "test": "Request with 2pm in From says \"Write the start time in 24-hour form, like 09:00 or 14:00.\"",
+    "criterion": 10,
+    "what_should_happen": "Deepa types 2pm in the From box and presses Request. The line under the times, and the panel, say \"Write the start time in 24-hour form, like 09:00 or 14:00.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "From",
+      "Request",
+      "Write the start time in 24-hour form, like 09:00 or 14:00."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Request with From 14:00 and To 14:20 says \"An interval lasts from 30 minutes to 12 hours.\"",
+    "criterion": 11,
+    "what_should_happen": "With From 14:00 and To 14:20 the slot is too short. After Request, the panel says \"Something in the form is not right\" and the line under the times says \"An interval lasts from 30 minutes to 12 hours.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "To",
+      "Request",
+      "Something in the form is not right",
+      "An interval lasts from 30 minutes to 12 hours"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Request with the Club box empty says \"Type the club’s name.\" under the club",
+    "criterion": 12,
+    "what_should_happen": "Deepa empties the Club box and presses Request. The line under the club says \"Type the club’s name.\" instead of its help words, while the line under the times keeps its help words.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Club",
+      "Request",
+      "Type the club’s name.",
+      "Kept on the booking; never in its record."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "From 17:00 to 14:00 is refused: \"That slot cannot be booked\", \"The interval must end after it starts.\"",
+    "criterion": 13,
+    "what_should_happen": "With From 17:00 and To 14:00 the slot ends before it starts. After Request, the panel says \"That slot cannot be booked\" and \"The interval must end after it starts.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "From",
+      "To",
+      "Request",
+      "That slot cannot be booked",
+      "The interval must end after it starts"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "a League match 06:20–08:00 on a Saturday is refused with the ground's hours, 06:00–22:00",
+    "criterion": 14,
+    "what_should_happen": "A League match from 06:20 to 08:00 needs 40 minutes of setup, so the ground would be held from 05:40, before it opens. The panel says \"That slot cannot be booked\" and \"With setup and teardown, the ground would be held outside its hours: it is open 06:00–22:00 that day.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "From",
+      "To",
+      "Request",
+      "That slot cannot be booked",
+      "With setup and teardown, the ground would be held outside its hours: it is open {opens}–{closes} that day."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "a day that has already gone is refused: \"Nobody books the past.\"",
+    "criterion": 15,
+    "what_should_happen": "Deepa picks Monday 2 November, which has already gone, and presses Request. The panel says \"That slot cannot be booked\" and \"Nobody books the past.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Day",
+      "Request",
+      "That slot cannot be booked",
+      "Nobody books the past"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "changing the day, the ground, the event, a time or the club clears the red words and brings back \"Request a slot\"",
+    "criterion": 16,
+    "what_should_happen": "After a refused Request, Deepa changes the club, then the ground, the event, the From time, the To time and the day, asking again in between. Each change takes the refusal and the red words away and the panel says \"Request a slot\" again.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Club",
+      "Request",
+      "Request a slot",
+      "Kept on the booking; never in its record.",
+      "Ground {name}",
+      "Event type",
+      "Practice",
+      "From",
+      "To",
+      "Day"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "before the grounds and event types arrive there are no ground buttons and the drop-down says \"Choose…\"",
+    "criterion": 17,
+    "what_should_happen": "The moment Book first draws, before the grounds and event types have arrived, the row of ground buttons is empty and the drop-down says \"Choose…\". Once they arrive, Ground A and League match are there.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/components/Dropdown.jsx"
+    ],
+    "exact_words": [
+      "Ground {name}",
+      "Event type",
+      "Choose…",
+      "League match"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Tab goes through the Day box, the ground buttons, the drop-down, From, To and Club in order, and Enter sends",
+    "criterion": 18,
+    "what_should_happen": "Without a mouse, Tab goes from the Day box to Ground A, B, C and D, then the drop-down, From, To and Club, in that order. Pressing Enter in the Club box sends the form, so the empty club is reported.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Day",
+      "Ground {name}",
+      "Event type",
+      "From",
+      "To",
+      "Club",
+      "Type the club’s name."
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "Enter in the From box sends the form, as Request does",
+    "criterion": 18,
+    "what_should_happen": "With From 17:00 and To 14:00 typed, pressing Enter in the From box sends the form just as Request would. The panel then says \"The interval must end after it starts.\".",
+    "look_at": [
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "From",
+      "To",
+      "The interval must end after it starts"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "test": "on the drop-down, Down opens it, Up moves, Enter picks; Enter or Space opens it and Esc closes it",
+    "criterion": 18,
+    "what_should_happen": "With the focus on the drop-down, Down opens the list, Up moves from League match to Friendly match and Enter picks it. Enter opens the list again, Esc closes it with Friendly match still chosen, and Space opens it too. A screen reader names the drop-down with its choice: \"Event type: League match\" first, then \"Event type: Friendly match\".",
+    "look_at": [
+      "src/components/Dropdown.jsx",
+      "src/pages/clerk/Book.jsx"
+    ],
+    "exact_words": [
+      "Event type",
+      "League match",
+      "Friendly match",
+      "Event type: League match",
+      "Event type: Friendly match"
+    ]
+  },
+  {
+    "ticket": "F-05",
+    "criterion": 19,
+    "checked_by": "browser",
+    "reason": "The panel moving under the form below laptop width depends on the window's width."
+  },
+  {
+    "ticket": "F-05",
+    "criterion": 20,
+    "checked_by": "browser",
+    "reason": "From and to and Club standing one under the other at phone width need a real browser's layout."
+  },
+  {
+    "ticket": "F-05",
+    "test": "with the Day box empty the line above the title names only the place, and Request says \"Pick a day.\" under the box and in the panel",
+    "criterion": 21,
+    "what_should_happen": "With the Day box cleared, the line above the title says just \"Deccan Sports Complex\", with no day after it. Request then sends nothing: \"Pick a day.\" appears in red under the Day box and in the panel under \"Something in the form is not right\", and the Day box is marked as wrong. The times are not blamed: their help line stays as it was.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Deccan Sports Complex",
+      "Pick a day.",
+      "Something in the form is not right",
+      "The match itself, 24-hour (14:00). The setup and teardown are added from the event type.",
+      "Type the time it starts, like 14:00.",
+      "Write the start time in 24-hour form, like 09:00 or 14:00.",
+      "Ground and event"
+    ]
   }
 ]
