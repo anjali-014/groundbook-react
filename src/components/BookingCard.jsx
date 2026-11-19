@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Icon from './Icon.jsx';
 import Problem from './Problem.jsx';
 import { stateName } from '../data/complex.js';
-import { hhmm, longDate } from '../data/days.js';
+import { dayOf, hhmm, longDate } from '../data/days.js';
 import { explain } from '../data/messages.js';
 import { useEventNames, useGet, usePost } from '../hooks/useApi.jsx';
 
@@ -13,11 +13,23 @@ function Outcome({ answer, ok }) {
   const { title, text } = explain(answer);
   return <div className="result-pill is-no"><Icon name="alert" size={16} /><div><strong>{title}</strong><p>{text}</p></div></div>;
 }
+/** One line of a booking's record, as words. */
+function eventLine(e) {
+  switch (e.kind) {
+    case 'requested': return { icon: 'plus', title: 'Requested', note: `${hhmm(e.from)}–${hhmm(e.to)}` };
+    case 'confirmed': return { icon: 'check', title: 'Confirmed' };
+    case 'moved': return { icon: 'forward', title: 'Moved', note: `${hhmm(e.previousFrom)}–${hhmm(e.previousTo)} → ${hhmm(e.from)}–${hhmm(e.to)}` };
+    case 'cancelled': return { icon: 'x', title: e.late ? 'Cancelled late' : 'Cancelled', note: e.late ? 'after the slot began' : 'before the slot began' };
+    default: return { icon: 'list', title: 'Changed' };
+  }
+}
+
+
 /**
-  * One booking (GET /bookings/{id}): the slot, the ground held around it and its state. Deepa can Confirm, Cancel
- * and Move it from here.
+ * One booking (GET /bookings/{id}): the slot, the ground held around it, its state, and its record. With `actions`
+ * Deepa can Confirm, Cancel and Move it from here.
  */
-export default function BookingCard({ id }) {
+export default function BookingCard({ id, actions = false }) {
   const post = usePost();
   const answer = useGet(`/bookings/${id}`);
   const names = useEventNames();
@@ -65,20 +77,40 @@ export default function BookingCard({ id }) {
         <div><dt>Ground held</dt><dd className="mono">{hhmm(b.groundHeldFrom)}–{hhmm(b.groundHeldTo)}</dd></div>
       </dl>
 
-      <div className="btn-row">
-        <button type="button" className="btn btn-primary" onClick={() => act('confirm')}><Icon name="check" size={16} /> Confirm</button>
-        <button type="button" className="btn btn-soft" onClick={() => act('cancel')}><Icon name="x" size={16} /> Cancel</button>
+      {actions && (
+        <>
+          <div className="btn-row">
+            <button type="button" className="btn btn-primary" onClick={() => act('confirm')}><Icon name="check" size={16} /> Confirm</button>
+            <button type="button" className="btn btn-soft" onClick={() => act('cancel')}><Icon name="x" size={16} /> Cancel</button>
+          </div>
+          <form className="move-form" onSubmit={move}>
+            <span className="field-label">Move to</span>
+            <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveFrom} onChange={(e) => setMoveFrom(e.target.value)} aria-label="Move from" /></div>
+            <span className="muted">to</span>
+            <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveTo} onChange={(e) => setMoveTo(e.target.value)} aria-label="Move to" /></div>
+            <button type="submit" className="btn btn-soft"><Icon name="forward" size={16} /> Move</button>
+          </form>
+          <Outcome answer={result} ok={(r) => (result.kind === 'confirm' ? `Confirmed at ${hhmm(r.confirmedAt)}.`
+          : result.kind === 'cancel' ? `Cancelled${r.late ? ' late: the slot had already begun' : ''}.`
+          : `Moved to ${hhmm(r.from)}–${hhmm(r.to)}; the ground is held ${hhmm(r.groundHeldFrom)}–${hhmm(r.groundHeldTo)}.`)} />
+        </>
+      )}
+
+      <div className="record">
+        <p className="record-title">The record <span className="nb-lock"><Icon name="lock" size={12} /> nobody can erase it</span></p>
+        <ol className="record-lines">
+          {b.events.map((e, i) => {
+            const line = eventLine(e);
+            return (
+              <li key={i}>
+                <span className="nb-icon"><Icon name={line.icon} size={13} /></span>
+                <span><strong>{line.title}</strong>{line.note && <span className="muted"> · {line.note}</span>}</span>
+                <time className="mono muted">{dayOf(e.at).slice(5)} {hhmm(e.at)}</time>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-       <form className="move-form" onSubmit={move}>
-        <span className="field-label">Move to</span>
-        <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveFrom} onChange={(e) => setMoveFrom(e.target.value)} aria-label="Move from" /></div>
-        <span className="muted">to</span>
-        <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveTo} onChange={(e) => setMoveTo(e.target.value)} aria-label="Move to" /></div>
-        <button type="submit" className="btn btn-soft"><Icon name="forward" size={16} /> Move</button>
-        </form>
-      <Outcome answer={result} ok={(r) => (result.kind === 'confirm' ? `Confirmed at ${hhmm(r.confirmedAt)}.`
-      : result.kind === 'cancel' ? `Cancelled${r.late ? ' late: the slot had already begun' : ''}.`
-      : `Moved to ${hhmm(r.from)}–${hhmm(r.to)}; the ground is held ${hhmm(r.groundHeldFrom)}–${hhmm(r.groundHeldTo)}.`)} />
       
     </article>
   );

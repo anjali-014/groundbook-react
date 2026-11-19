@@ -15,7 +15,7 @@
 - [x] Ticket 7 · When the day says no
 - [x] Ticket 8 · The clerk's bookings
 - [x] Ticket 9 · Moving a booking
-- [ ] Ticket 10 · The officer's records
+- [x] Ticket 10 · The officer's records
 
 ## Run it
 

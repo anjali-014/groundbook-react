@@ -2325,5 +2325,260 @@
     "criterion": 15,
     "checked_by": "browser",
     "reason": "The Move row wrapping onto two lines at phone width needs a real browser's layout."
+  },
+  {
+    "ticket": "F-10",
+    "test": "Records says \"Deccan Sports Complex · the planner’s record\" over the title, with no tabs and the day picker on next Saturday",
+    "criterion": 0,
+    "what_should_happen": "Anita's page says \"Deccan Sports Complex · the planner’s record\" above its title, \"Records\". There are no tabs, and the day picker shows next Saturday, Saturday 7 November.",
+    "look_at": [
+      "src/pages/officer/Records.jsx"
+    ],
+    "exact_words": [
+      "{place} · the planner’s record",
+      "Records",
+      "{name}'s screens"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a day with bookings shows the same table, in start order, with the first card open; a row's arrow opens another",
+    "criterion": 1,
+    "what_should_happen": "Records has the same table as Bookings, with the columns Booking, Ground, Event, Slot and State and the rows in start order, BK0002 at 10:00 before BK0001 at 14:00. The first row's card is open, and pressing the arrow \"Open BK0001\" opens BK0001's card and puts ?id=BK0001 in the address.",
+    "look_at": [
+      "src/pages/officer/Records.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Booking",
+      "Ground",
+      "Event",
+      "Slot",
+      "State",
+      "Open {id}"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a booking's card on Records has no Confirm, no Cancel and no Move",
+    "criterion": 2,
+    "what_should_happen": "Records only reads. A booking's card there has no Confirm, no Cancel and no Move, and no boxes or buttons at all.",
+    "look_at": [
+      "src/pages/officer/Records.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Cancel",
+      "Move",
+      "The record",
+      "nobody can erase it"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a day with no bookings says \"No booking that day\" and \"When Deepa requests a slot, its record starts here.\"",
+    "criterion": 3,
+    "what_should_happen": "On a day with no bookings Records says \"No booking that day\". Under it, in Anita's own words: \"When Deepa requests a slot, its record starts here.\".",
+    "look_at": [
+      "src/pages/officer/Records.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "No booking that day",
+      "When Deepa requests a slot, its record starts here."
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a booking just made for 14:00–17:00 has \"The record\", \"nobody can erase it\" and one line Requested 14:00–17:00 at 11-03 13:43",
+    "criterion": 4,
+    "what_should_happen": "Under the facts on the card is \"The record\" with \"nobody can erase it\". A booking just requested for 14:00 to 17:00 has one line: \"Requested\", \"14:00–17:00\" and when it happened, written month-day and time in India time, 11-03 13:43.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "criterion": 4,
+    "checked_by": "browser",
+    "reason": "The lock beside \"nobody can erase it\" and each line's icon are drawings that screen readers skip, so only a real browser shows them."
+  },
+  {
+    "ticket": "F-10",
+    "test": "after a confirmation the record has a second line, Confirmed, with its time",
+    "criterion": 5,
+    "what_should_happen": "Once the booking has been confirmed, its record has two lines. The first is the request and the second says \"Confirmed\" with the time it happened.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested",
+      "Confirmed"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "after a move from 14:00–17:00 to 13:00–16:00 the record has a line Moved 14:00–17:00 → 13:00–16:00",
+    "criterion": 6,
+    "what_should_happen": "The booking was moved from 14:00–17:00 to 13:00–16:00. Its record has a line \"Moved\" with \"14:00–17:00 → 13:00–16:00\" and the time of the move.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Moved",
+      "{from}–{to} → {newFrom}–{newTo}"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a booking cancelled before its slot began has a line Cancelled, before the slot began",
+    "criterion": 7,
+    "what_should_happen": "The booking was cancelled days before its slot. Its record has a line \"Cancelled\" with \"before the slot began\", and the line does not say late.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Cancelled",
+      "before the slot began"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a booking cancelled after its slot began has a line Cancelled late, after the slot began",
+    "criterion": 8,
+    "what_should_happen": "The booking was cancelled at 15:00 on its Saturday, an hour after its slot began. Its record has a line \"Cancelled late\" with \"after the slot began\" and the time 11-07 15:00.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Cancelled late",
+      "after the slot began"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "with several changes the lines run oldest first, and the first line still says 14:00–17:00 after the move",
+    "criterion": 9,
+    "what_should_happen": "A booking was requested, confirmed, moved and cancelled on different days. Its record has four lines, oldest first, each with its own time, and the first line still says 14:00–17:00 although the booking has since moved.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested",
+      "Confirmed",
+      "Moved",
+      "Cancelled",
+      "before the slot began",
+      "{from}–{to} → {newFrom}–{newTo}"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "a refused Confirm, Cancel or Move adds no line to the record",
+    "criterion": 10,
+    "what_should_happen": "BK0001 was confirmed and then cancelled, and in between a second Confirm, a Move that clashed, and later another Cancel and Confirm were all refused. Its record has just three lines, Requested, Confirmed and Cancelled: only what happened is written.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested",
+      "Confirmed",
+      "Cancelled"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "the club typed on Book is not in the record",
+    "criterion": 11,
+    "what_should_happen": "The booking was requested for the club \"Deccan Gymkhana\". The club's name is not in its record, nor anywhere on Anita's page.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Deccan Gymkhana"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "Deepa's card on Bookings shows the same record, and it gains a line straight after Confirm",
+    "criterion": 12,
+    "what_should_happen": "On Bookings, Deepa's card shows the same record, with its Requested line. Straight after she presses Confirm a second line, \"Confirmed\", appears.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/hooks/useApi.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested",
+      "Confirm",
+      "Confirmed"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "Sabu's card from a block on The day shows the same record, and it gains a line straight after a Move",
+    "criterion": 12,
+    "what_should_happen": "The card Sabu opens from a block on The day has the same record. Straight after a move to 13:00–16:00 it gains a \"Moved\" line, and after Cancel a \"Cancelled\" line.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The record",
+      "nobody can erase it",
+      "Requested",
+      "Moved",
+      "Cancelled",
+      "Cancel",
+      "Move from",
+      "Move to",
+      "{id}, {event}, {from} to {to}, {state}",
+      "{from}–{to} → {newFrom}–{newTo}"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "test": "Tab reaches the day picker and each row's arrow; Enter opens that booking and its record",
+    "criterion": 13,
+    "what_should_happen": "Without a mouse, Tab on Records reaches the two day buttons, then Open BK0002 and Open BK0001. Enter on Open BK0001 opens its card, whose record shows its request and its confirmation.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The day before",
+      "The day after",
+      "Open {id}",
+      "The record",
+      "nobody can erase it",
+      "Confirmed"
+    ]
+  },
+  {
+    "ticket": "F-10",
+    "criterion": 14,
+    "checked_by": "browser",
+    "reason": "The card sitting under the table and \"nobody can erase it\" staying on one line at phone width need a real browser's layout."
   }
 ]
