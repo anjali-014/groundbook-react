@@ -1,5 +1,7 @@
 // Days and times on the planner, all in India time. The backend writes every time on the complex's own clock (India 
-// time) ending in Z: a slot typed as 14:00 is sent as 14:00Z and shown as 14:00, and the moments things happen (the
+// time) ending in Z: a slot typed as 14:00 is sent as 14:00Z and shown as 14:00, and the moments things happen
+// ("Confirmed at …", the end of a hold) are shown as written too. Only the computer's own clock (Date.now(), real
+// UTC) needs turning into India time, to know today's date at the complex.
 // end of a hold) are shown as written too. Only the computer's own clock (Date.now(), real UTC) needs turning into
 // India time, to know today's date at the centre.
 /** The date (YYYY-MM-DD) of a time the API wrote. */

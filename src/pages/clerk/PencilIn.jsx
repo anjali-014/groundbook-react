@@ -12,7 +12,7 @@ import { dayOf, hhmm, longDate, minutesOf, weekday } from '../../data/days.js';
  * event type's name. The end of the hold is a real instant, shown in India time.
  * Drag and drop is HTML's own; tapping the booking does the same, because phones do not drag.
  */
-export default function PencilIn({ booking, ground, eventName, club, onDone }) {
+export default function PencilIn({ booking, ground, eventName, club, onDone, onOpen }) {
   const [stage, setStage] = useState('pencil');
   const [dragging, setDragging] = useState(false);
   const [over, setOver] = useState(false);
@@ -103,6 +103,7 @@ export default function PencilIn({ booking, ground, eventName, club, onDone }) {
             <p className="place-title">{ground.name} is held {hhmm(heldFrom)}–{hhmm(heldTo)}</p>
             <p className="place-text">
               The match plus its setup and teardown. Confirm it by {longDate(dayOf(holdUntil))}, {hhmm(holdUntil)}, or the hold lapses.
+                            {' '}<button type="button" className="link-btn" onClick={() => onOpen(id)}>Open the booking card <Icon name="arrow" size={14} /></button>
             </p>
                     </>
         )}

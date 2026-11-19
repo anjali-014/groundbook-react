@@ -1,4 +1,4 @@
-// The refusals the backend gives, in the words of the person who meets them. The backend gives one shape (type,
+// Every refusal the backend can give, in the words of the person who meets it. The backend gives one shape (type,
 // title, status, detail, and its extras); this builds the screen's own sentence from the type and the extras, never
 // from the backend's wording, and says what to do next.
 const at = (iso) => (iso ? iso.slice(11, 16) : '');
@@ -44,6 +44,11 @@ function badSlot(body) {
   return 'Pick other times.';
 }
 
+
+/** The last part of the address the refusal was for, e.g. BK0001 from /bookings/BK0001. */
+const lastPart = (instance) => (instance ?? '').split('/').filter(Boolean).pop() ?? '';
+
+
 export function explain(answer) {
   const body = answer.body ?? {};
   switch (body.type) {
@@ -53,8 +58,15 @@ export function explain(answer) {
       return { title: 'That slot cannot be booked', text: badSlot(body) };
        case '/errors/overlap': {
         const names = (body.clashesWith ?? []).map((c) => `${c.bookingId} (held ${at(c.groundHeldFrom)}–${at(c.groundHeldTo)})`);
-        return { title: 'With the buffers, it clashes', text: `It overlaps ${names.join(', ')}. On paper the times may not touch; the setup and teardown do.` };
-    }
+        return { title: 'With the buffers, it clashes', text: `It overlaps ${names.join(', ')}. On paper the times may not touch; the setup and teardown do.` };}
+    case '/errors/already-started': return { title: 'It has already begun', text: 'The interval has begun; it can no longer be confirmed or moved.' };
+    case '/errors/already-over': return { title: 'It has already ended', text: 'The interval has ended; it can no longer be cancelled.' };
+    case '/errors/cancelled': return { title: 'It was cancelled', text: 'Request a new booking instead.' };
+        case '/errors/already-confirmed': return { title: 'Already confirmed', text: 'The booking is already confirmed. Nothing changed.' };
+    case '/errors/already-cancelled': return { title: 'Already cancelled', text: 'The booking is already cancelled. Nothing changed.' };
+    case '/errors/no-such-booking': return { title: 'No such booking', text: `There is no booking ${lastPart(body.instance)}.` };
+  
+    
           case '/errors/no-such-ground': return { title: 'No such ground', text: 'That ground is not here. The grounds are A to D.' };
     case '/errors/no-such-event-type': return { title: 'No such event type', text: 'Pick one of the event types on the list.' };
     case '/errors/no-such-venue': return { title: 'That complex is not here', text: 'This planner is the Deccan Sports Complex only.' };

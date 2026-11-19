@@ -2,8 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api.js';
 import { VENUE } from '../data/complex.js';
 
-// Every screen reads the planner through these hooks. After a change (a request) the screens on show ask for their
-// data again, as a real frontend refetches after a POST.
+// Every screen reads the planner through these hooks. After any change (a request, a confirm, a cancel) the screens
+// on show ask for their data again, as a real frontend refetches after a POST.
 const DataVersion = createContext(null);
 
 /** Holds the number that goes up after every change, so the screens know to read again. */
@@ -13,20 +13,26 @@ export function DataProvider({ children }) {
 }
 
 /** 
- * The answer to a GET of this path ({ status, body }), read again after every change. Until the first answer
- * arrives it gives null; afterwards it keeps showing the last answer while it asks again.
+ * The answers to GETs of these paths, in the same order, read again after every change. Until the first answers
+ * arrive it gives null; afterwards it keeps showing the last answers while it asks again.
  */
-export function useGet(path) {
+export function useGetEach(paths) {
   const { version } = useContext(DataVersion);
-  const [answer, setAnswer] = useState(null);
+  const [answers, setAnswers] = useState(null);
+  const key = paths.join(' ');
   useEffect(() => {
     let current = true;
-    api.get(path).then((got) => {
-      if (current) setAnswer(got);
+    Promise.all(key.split(' ').filter(Boolean).map((path) => api.get(path))).then((all) => {
+      if (current) setAnswers(all);
     });
     return () => { current = false; };
-  }, [path, version]);
-  return answer;
+  }, [key, version]);
+  return answers;
+}
+
+/** The answer to a GET of this path ({ status, body }), or null until it arrives. */
+export function useGet(path) {
+  return useGetEach([path])?.[0] ?? null;
 }
 
 /** The event types' names by code, e.g. { league: 'League match' }, or null until they arrive. */

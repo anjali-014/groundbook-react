@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Dropdown from '../../components/Dropdown.jsx';
 import Icon from '../../components/Icon.jsx';
 import Problem from '../../components/Problem.jsx';
@@ -12,7 +13,7 @@ import { GroundDay } from '../caretaker/Day.jsx';
 import PencilIn from './PencilIn.jsx';
 
 /** The answer to "request a slot": pencil it on the ground's day and see the hold, or why not. */
-function RequestResult({ answer, club, grounds, types, onNext }) {
+function RequestResult({ answer, club, grounds, types, onOpen, onNext }) {
   if (!answer) {
     return (
       <div className="result result-idle">
@@ -25,7 +26,7 @@ function RequestResult({ answer, club, grounds, types, onNext }) {
     if (answer.status === 201) {
     const b = answer.body;
     return <PencilIn key={b.bookingId} booking={b} ground={grounds.find((g) => g.ground === b.ground)}
-      eventName={types.find((t) => t.code === b.event)?.name ?? ''} club={club} onDone={onNext} />;
+            eventName={types.find((t) => t.code === b.event)?.name ?? ''} club={club} onDone={onNext} onOpen={onOpen} />;
   }
   return <div className="result result-no"><Problem answer={answer} /></div>;
 }
@@ -46,6 +47,7 @@ export default function Book() {
   const [answer, setAnswer] = useState(null);
   const [ghost, setGhost] = useState(null);
   const [sentClub, setSentClub] = useState('');
+  const navigate = useNavigate();
   const groundsAnswer = useGet(`/venues/${VENUE.slug}/grounds`);
   const types = useGet(`/venues/${VENUE.slug}/event-types`);
   const grounds = groundsAnswer?.status === 200 ? groundsAnswer.body.grounds : [];
@@ -130,7 +132,7 @@ export default function Book() {
                 <p className={timeWords ? 'field-error' : 'field-help'}>{timeWords || 'The match itself, 24-hour (14:00). The setup and teardown are added from the event type.'}</p>
               </div>
 
-              <div className="field">
+        <div className="field">
                 <label className="field-label" htmlFor="bk-club"><span className="step-no">4</span> Club</label>
                 <div className={`input-wrap${bad.has('club') ? ' has-error' : ''}`}>
                   <input id="bk-club" className="input" value={club} onChange={(e) => { setClub(e.target.value); setAnswer(null); }} aria-invalid={bad.has('club')} />
@@ -146,7 +148,8 @@ export default function Book() {
         </form>
 
         <div className="result-slot">
-          <RequestResult answer={answer} club={sentClub} grounds={grounds} types={list} onNext={() => setAnswer(null)} />
+          <RequestResult answer={answer} club={sentClub} grounds={grounds} types={list} onNext={() => setAnswer(null)} 
+            onOpen={(id) => navigate(`/clerk/bookings?date=${answer.body.from.slice(0, 10)}&id=${id}`)} />
         </div>
       </div>
 
@@ -155,5 +158,6 @@ export default function Book() {
         <div className="planner"><GroundDay ground={ground} date={day} ghost={ghost} /></div>
       </section>
     </div>
+
   );
 }

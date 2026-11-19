@@ -1681,5 +1681,372 @@
     "checked_by": "browser",
     "reason": "The panel sitting under the form and the strip scrolling sideways at phone width need a real browser's layout.",
     "what_should_happen": ""
+  },
+  {
+    "ticket": "F-08",
+    "test": "Bookings says \"Deccan Sports Complex · the clubs’ slots\" over the title, with the day picker on next Saturday",
+    "criterion": 0,
+    "what_should_happen": "Deepa's Bookings says \"Deccan Sports Complex · the clubs’ slots\" above its title, \"Bookings\". Under it the day picker, with its two arrow buttons, shows next Saturday, Saturday 7 November.",
+    "look_at": [
+      "src/pages/clerk/Bookings.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "{place} · the clubs’ slots",
+      "Bookings",
+      "The day before"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "the table has Booking, Ground, Event, Slot and State, and its rows BK0002, BK0001, BK0003 in the order they start",
+    "criterion": 1,
+    "what_should_happen": "Three bookings that Saturday: BK0002 on Ground C at 10:00, BK0001 on Ground A at 14:00 and BK0003 on Ground A at 17:50. The table's columns are Booking, Ground, Event, Slot and State, and its rows read BK0002, BK0001, BK0003, each with its ground letter, event, times and state.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Booking",
+      "Ground",
+      "Event",
+      "Slot",
+      "State",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "beside the table the first row's card is open: BK0002 with its day and ground, state, Event, Slot and Ground held",
+    "criterion": 2,
+    "what_should_happen": "At the start the first row's booking, BK0002, has its card open beside the table. The card says \"Saturday 7 November · Ground C\", BK0002 with its state, and its Event, Slot and Ground held.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Event",
+      "Slot",
+      "Ground held",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "criterion": 2,
+    "checked_by": "browser",
+    "reason": "The highlight on the row whose card is open is a colour, which only a real browser shows."
+  },
+  {
+    "ticket": "F-08",
+    "test": "the row whose card is open, BK0002 at first, is read as the current one, and only that row",
+    "criterion": 2,
+    "what_should_happen": "The highlight on the open row is a colour, so a screen reader is told in another way which row is open. At the start BK0002's row is read as the current one, and BK0001's and BK0003's rows are not.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": []
+  },
+  {
+    "ticket": "F-08",
+    "test": "clicking BK0001's row opens its card and puts ?id=BK0001 in the address",
+    "criterion": 3,
+    "what_should_happen": "Clicking anywhere on BK0001's row opens BK0001's card, for Saturday 7 November on Ground A. The address now ends in ?id=BK0001.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "League match",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "the arrow \"Open BK0001\" opens its card too",
+    "criterion": 3,
+    "what_should_happen": "Each row has an arrow button. Pressing the one named \"Open BK0001\" opens BK0001's card with its slot 14:00–17:00. The address ends in ?id=BK0001.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Open {id}",
+      "Slot",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "the address /clerk/bookings?date=2026-11-07&id=BK0001 opens Saturday 7 November with BK0001's card",
+    "criterion": 4,
+    "what_should_happen": "Opening /clerk/bookings?date=2026-11-07&id=BK0001 shows Saturday 7 November in the day picker. BK0001's card is the one open, although it is not the first row.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx",
+      "src/components/DateStepper.jsx"
+    ],
+    "exact_words": [
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "The day after shows that day's bookings with the first card, and the booking number leaves the address",
+    "criterion": 5,
+    "what_should_happen": "With BK0001 open on Saturday, Deepa presses \"The day after\". The table shows Sunday's booking BK0002 with its card open, BK0001's row is gone, and the address names the new day but no booking.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "The day after",
+      "{date} · Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "a day with no bookings says \"No booking that day\" and \"Request a slot on Book; it appears here with its card.\"",
+    "criterion": 6,
+    "what_should_happen": "On a day with no bookings there is no table. The page says \"No booking that day\" and \"Request a slot on Book; it appears here with its card.\".",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx",
+      "src/pages/clerk/Bookings.jsx"
+    ],
+    "exact_words": [
+      "No booking that day",
+      "Request a slot on Book; it appears here with its card."
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "before every ground's day has arrived only the day picker shows; then the table appears",
+    "criterion": 7,
+    "what_should_happen": "The moment Bookings first draws, only the day picker is there: no table, no card and no empty message. The table appears once every ground's day has arrived.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "The day after",
+      "No booking that day"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "?id=BK9999 says \"No such booking\" and \"There is no booking BK9999.\" where the card goes",
+    "criterion": 8,
+    "what_should_happen": "The address names a booking that does not exist, ?id=BK9999. Where the card would be, the page says \"No such booking\" and \"There is no booking BK9999.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "No such booking",
+      "There is no booking {id}."
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Confirm on a requested booking says \"Confirmed at 13:43.\" and the card and the table say Confirmed",
+    "criterion": 9,
+    "what_should_happen": "BK0001 is requested and its slot is days away. Pressing \"Confirm\" at 13:43 in India puts \"Confirmed at 13:43.\" under the buttons, and both the card and the table now say Confirmed.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Confirmed at {time}.",
+      "Confirmed",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "criterion": 9,
+    "checked_by": "browser",
+    "reason": "The answer line being green and the block turning teal are colours, which only a real browser shows."
+  },
+  {
+    "ticket": "F-08",
+    "test": "Confirm on a confirmed booking says \"Already confirmed\" and \"The booking is already confirmed. Nothing changed.\"",
+    "criterion": 10,
+    "what_should_happen": "BK0001 is already confirmed. Pressing \"Confirm\" again gives the line \"Already confirmed\" and \"The booking is already confirmed. Nothing changed.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Confirmed",
+      "Already confirmed",
+      "The booking is already confirmed. Nothing changed."
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Cancel before the slot begins says \"Cancelled.\" and the card and the table say Cancelled",
+    "criterion": 11,
+    "what_should_happen": "Pressing \"Cancel\" on a booking whose slot has not begun gives the line \"Cancelled.\". The card and the table both say Cancelled.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Cancel",
+      "Cancelled",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "cancelling from a block on The day drops the ground's held count by one and leaves the block on the strip",
+    "criterion": 11,
+    "what_should_happen": "Sabu opens BK0001 from its block on The day and presses \"Cancel\". The line says \"Cancelled.\", Ground A's head drops to 0 held, and the block is still on the strip, now named as cancelled.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/DayStrip.jsx",
+      "src/hooks/useApi.jsx"
+    ],
+    "exact_words": [
+      "Cancel",
+      "Cancelled",
+      "{opens}–{closes} · {count} held",
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Cancel after the slot has begun says \"Cancelled late: the slot had already begun.\" and the block stays, cancelled",
+    "criterion": 12,
+    "what_should_happen": "It is 15:00 on Saturday and BK0001's slot, 14:00–17:00, has begun. Pressing \"Cancel\" says \"Cancelled late: the slot had already begun.\" and the block stays on the strip as cancelled, so the hour is not shown as free.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "Cancel",
+      "late: the slot had already begun",
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Cancel on a cancelled booking says \"Already cancelled\" and \"The booking is already cancelled. Nothing changed.\"",
+    "criterion": 13,
+    "what_should_happen": "BK0001 has already been cancelled. Pressing \"Cancel\" again gives \"Already cancelled\" and \"The booking is already cancelled. Nothing changed.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Cancel",
+      "Cancelled",
+      "Already cancelled",
+      "The booking is already cancelled. Nothing changed."
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Confirm on a cancelled booking says \"It was cancelled\" and \"Request a new booking instead.\"",
+    "criterion": 14,
+    "what_should_happen": "BK0001 has been cancelled. Pressing \"Confirm\" gives \"It was cancelled\" and \"Request a new booking instead.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Cancelled",
+      "It was cancelled",
+      "Request a new booking instead."
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Confirm on a requested booking whose slot has begun says \"It has already begun\"",
+    "criterion": 15,
+    "what_should_happen": "It is 15:00 on Saturday and BK0001, still requested, began at 14:00. Pressing \"Confirm\" gives \"It has already begun\" and \"The interval has begun; it can no longer be confirmed or moved.\", and the booking stays requested.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Requested",
+      "It has already begun",
+      "The interval has begun; it can no longer be confirmed or moved"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Cancel on a booking whose slot has ended says \"It has already ended\"",
+    "criterion": 16,
+    "what_should_happen": "It is 18:00 on Saturday and BK0001's slot ended at 17:00. Pressing \"Cancel\" gives \"It has already ended\" and \"The interval has ended; it can no longer be cancelled.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Cancel",
+      "Requested",
+      "It has already ended",
+      "The interval has ended; it can no longer be cancelled"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "the card that opens from a block on The day has Confirm and Cancel with the same answers",
+    "criterion": 17,
+    "what_should_happen": "Sabu opens BK0001 from its block on The day, and the card in the panel has the same buttons. Confirm says \"Confirmed at 13:43.\" and the block is now named as confirmed, and Confirm again says \"Already confirmed\" with \"The booking is already confirmed. Nothing changed.\".",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Confirm",
+      "Confirmed at {time}.",
+      "Already confirmed",
+      "The booking is already confirmed. Nothing changed.",
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "\"Open the booking card\" on Book's last step opens Bookings on that day with its card",
+    "criterion": 18,
+    "what_should_happen": "Deepa requests the slot on Book, pencils it in and, once the ground is held, presses \"Open the booking card\". Bookings opens on Saturday 7 November with BK0001 in the address and its card open.",
+    "look_at": [
+      "src/pages/clerk/Book.jsx",
+      "src/pages/clerk/PencilIn.jsx"
+    ],
+    "exact_words": [
+      "Open the booking card",
+      "Bookings",
+      "Requested",
+      "Event type",
+      "League match",
+      "Request",
+      "Booking {id}, {event}, {from} to {to}. Pencil it on {ground}"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "test": "Tab reaches the day picker, each row's arrow, then Confirm and Cancel; Enter on an arrow opens that booking",
+    "criterion": 19,
+    "what_should_happen": "Without a mouse, Tab reaches the two day buttons, then the arrows Open BK0002, Open BK0001 and Open BK0003, then Confirm and Cancel. Going back to Open BK0003 and pressing Enter opens BK0003's card.",
+    "look_at": [
+      "src/components/BookingsBrowser.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "The day before",
+      "The day after",
+      "Open {id}",
+      "Confirm",
+      "Cancel",
+      "Requested"
+    ]
+  },
+  {
+    "ticket": "F-08",
+    "criterion": 20,
+    "checked_by": "browser",
+    "reason": "The card moving under the table below laptop width, and the table scrolling sideways on a phone, need a real browser's layout."
   }
 ]
