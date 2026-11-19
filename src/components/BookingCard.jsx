@@ -13,16 +13,17 @@ function Outcome({ answer, ok }) {
   const { title, text } = explain(answer);
   return <div className="result-pill is-no"><Icon name="alert" size={16} /><div><strong>{title}</strong><p>{text}</p></div></div>;
 }
-
 /**
- * One booking (GET /bookings/{id}): the slot, the hall held around it and its state. Divya can Confirm and Cancel
- * it from here.
+  * One booking (GET /bookings/{id}): the slot, the ground held around it and its state. Deepa can Confirm, Cancel
+ * and Move it from here.
  */
 export default function BookingCard({ id }) {
   const post = usePost();
   const answer = useGet(`/bookings/${id}`);
   const names = useEventNames();
   const [result, setResult] = useState(null);
+  const [moveFrom, setMoveFrom] = useState('');
+  const [moveTo, setMoveTo] = useState('');
 
   // Handle case where booking is not found (404) or answer fails to load
   if (!answer || answer.status === 404) {
@@ -42,7 +43,13 @@ export default function BookingCard({ id }) {
   async function act(kind) {
     setResult({ kind, ...(await post(`/bookings/${id}/${kind}`)) });
   }
-
+  async function move(e) {
+    e.preventDefault();
+    const body = {};
+    if (moveFrom) body.from = `${date}T${moveFrom}:00Z`;
+    if (moveTo) body.to = `${date}T${moveTo}:00Z`;
+    setResult({ kind: 'move', ...(await post(`/bookings/${id}/move`, body)) });
+  }
   return (
     <article className="card booking-card">
       <header className="booking-head">
@@ -62,8 +69,16 @@ export default function BookingCard({ id }) {
         <button type="button" className="btn btn-primary" onClick={() => act('confirm')}><Icon name="check" size={16} /> Confirm</button>
         <button type="button" className="btn btn-soft" onClick={() => act('cancel')}><Icon name="x" size={16} /> Cancel</button>
       </div>
+       <form className="move-form" onSubmit={move}>
+        <span className="field-label">Move to</span>
+        <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveFrom} onChange={(e) => setMoveFrom(e.target.value)} aria-label="Move from" /></div>
+        <span className="muted">to</span>
+        <div className="input-wrap"><input className="input mono" type="text" inputMode="numeric" placeholder="14:00" maxLength={5} value={moveTo} onChange={(e) => setMoveTo(e.target.value)} aria-label="Move to" /></div>
+        <button type="submit" className="btn btn-soft"><Icon name="forward" size={16} /> Move</button>
+        </form>
       <Outcome answer={result} ok={(r) => (result.kind === 'confirm' ? `Confirmed at ${hhmm(r.confirmedAt)}.`
-        : `Cancelled${r.late ? ' late: the slot had already begun' : ''}.`)} />
+      : result.kind === 'cancel' ? `Cancelled${r.late ? ' late: the slot had already begun' : ''}.`
+      : `Moved to ${hhmm(r.from)}–${hhmm(r.to)}; the ground is held ${hhmm(r.groundHeldFrom)}–${hhmm(r.groundHeldTo)}.`)} />
       
     </article>
   );

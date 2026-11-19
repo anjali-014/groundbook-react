@@ -14,7 +14,7 @@
 - [x] Ticket 6 · Pencilling it in
 - [x] Ticket 7 · When the day says no
 - [x] Ticket 8 · The clerk's bookings
-- [ ] Ticket 9 · Moving a booking
+- [x] Ticket 9 · Moving a booking
 - [ ] Ticket 10 · The officer's records
 
 ## Run it

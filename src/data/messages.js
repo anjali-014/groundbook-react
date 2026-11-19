@@ -12,7 +12,8 @@ const BOXES = {
     date: { missing: 'Pick a day.', wrong: 'Pick a day.' },
 };
 const LENGTH = 'An interval lasts from 30 minutes to 12 hours.';
-
+/** Both time boxes with the same problem: one sentence for the pair. */
+const BOTH_TIMES = { missing: 'Type the times it starts and ends, like 14:00 and 17:00.', wrong: 'Write both times in 24-hour form, like 09:00 or 14:00.' };
 /** What is wrong with one field: it is empty, it is too short or too long a slot, or it is not written right. */
 function problemOf(error) {
   if (error.field === 'to' && /30 minutes/.test(error.message)) return 'length';
@@ -28,7 +29,14 @@ export function fieldText(errors = [], fields = null) {
   const named = errors.filter((e) => !fields || fields.includes(e.field));
   const seen = new Map();
   for (const e of named) if (!seen.has(e.field)) seen.set(e.field, problemOf(e));
-    const words = [];
+  const from = seen.get('from');
+  const to = seen.get('to');
+  const words = [];
+  if (from && from === to && from !== 'length') {
+    words.push(BOTH_TIMES[from]);
+    seen.delete('from');
+    seen.delete('to');
+  }
   for (const [field, problem] of seen) {
     words.push(problem === 'length' ? LENGTH : (BOXES[field] ?? { missing: 'Fill in every box.', wrong: 'Check what you typed.' })[problem]);
       }

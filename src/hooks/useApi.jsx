@@ -2,7 +2,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import api from '../api.js';
 import { VENUE } from '../data/complex.js';
 
-// Every screen reads the planner through these hooks. After any change (a request, a confirm, a cancel) the screens
+// Every screen reads the planner through these hooks. After any change (a request, a confirm, a cancel, a move) the
+// screens on show ask for their data again, as a real frontend refetches after a POST.
 // on show ask for their data again, as a real frontend refetches after a POST.
 const DataVersion = createContext(null);
 

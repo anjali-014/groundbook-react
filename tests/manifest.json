@@ -2048,5 +2048,282 @@
     "criterion": 20,
     "checked_by": "browser",
     "reason": "The card moving under the table below laptop width, and the table scrolling sideways on a phone, need a real browser's layout."
+  },
+  {
+    "ticket": "F-09",
+    "test": "under Confirm and Cancel the card has \"Move to\", two empty time boxes with \"to\" between them, and Move",
+    "criterion": 0,
+    "what_should_happen": "Under Confirm and Cancel on a booking's card is a row headed \"Move to\". It has two empty time boxes, each showing 14:00 as a hint, with \"to\" between them, and a \"Move\" button.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Cancel",
+      "Move to",
+      "to",
+      "Move",
+      "Move from"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "criterion": 0,
+    "checked_by": "browser",
+    "reason": "That the 14:00 hint in the boxes is grey can only be seen in a real browser."
+  },
+  {
+    "ticket": "F-09",
+    "test": "moving BK0001 to 13:00–16:00 says where it went and the card and the table show the new times",
+    "criterion": 1,
+    "what_should_happen": "Deepa types 13:00 and 16:00 and presses Move. The line says \"Moved to 13:00–16:00; the ground is held 12:20–16:30.\", the card's Slot and Ground held show the new times, and so does the table's Slot.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Move from",
+      "Move to",
+      "Move",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}.",
+      "Slot",
+      "Ground held"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "after a move the block on The day sits at the new times",
+    "criterion": 1,
+    "what_should_happen": "Sabu opens BK0001 from its block on The day and moves it to 13:00–16:00. The block on the strip is now named for 13:00 to 16:00, and none is left at 14:00 to 17:00.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/DayStrip.jsx"
+    ],
+    "exact_words": [
+      "{id}, {event}, {from} to {to}, {state}",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}.",
+      "Move from",
+      "Move to",
+      "Move"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "a confirmed booking that moves is still confirmed",
+    "criterion": 2,
+    "what_should_happen": "BK0001 has been confirmed. After it is moved to 13:00–16:00, the card and the table still say Confirmed, because a move keeps the state.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Confirmed",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}.",
+      "Slot"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "moving BK0001 to 15:00–18:00 clashes with BK0002 held 17:30–19:20, and BK0001 stays at 14:00–17:00",
+    "criterion": 3,
+    "what_should_happen": "Ground A has BK0001 at 14:00–17:00 and BK0002, a Practice held 17:30–19:20. Moving BK0001 to 15:00–18:00 gives \"With the buffers, it clashes\" and \"It overlaps BK0002 (held 17:30–19:20). On paper the times may not touch; the setup and teardown do.\", and BK0001's slot stays 14:00–17:00.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "With the buffers, it clashes",
+      "It overlaps {list}. On paper the times may not touch; the setup and teardown do.",
+      "{id} (held {from}–{to})",
+      "Slot"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "Move with both boxes empty says \"Type the times it starts and ends, like 14:00 and 17:00.\"",
+    "criterion": 4,
+    "what_should_happen": "Pressing Move with both boxes empty is refused. The line says \"Something in the form is not right\" and \"Type the times it starts and ends, like 14:00 and 17:00.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "Something in the form is not right",
+      "Type the times it starts and ends, like 14:00 and 17:00."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "Move 25:00 to 16:00 says \"Write the start time in 24-hour form, like 09:00 or 14:00.\"",
+    "criterion": 5,
+    "what_should_happen": "25:00 is not a time of day. Moving to 25:00 to 16:00 gives \"Something in the form is not right\" with \"Write the start time in 24-hour form, like 09:00 or 14:00.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "Something in the form is not right",
+      "Write the start time in 24-hour form, like 09:00 or 14:00."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "Move 18:00 to 15:00 says \"That slot cannot be booked\" and \"The interval must end after it starts.\"",
+    "criterion": 6,
+    "what_should_happen": "A move from 18:00 to 15:00 would end before it starts. The line says \"That slot cannot be booked\" and \"The interval must end after it starts.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "That slot cannot be booked",
+      "The interval must end after it starts"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "Move 14:00 to 14:15 says \"An interval lasts from 30 minutes to 12 hours.\"",
+    "criterion": 7,
+    "what_should_happen": "A move to 14:00 to 14:15 is too short. The line says \"Something in the form is not right\" with \"An interval lasts from 30 minutes to 12 hours.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "Something in the form is not right",
+      "An interval lasts from 30 minutes to 12 hours"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "a League match moved to 06:10–08:00 is refused with the ground's hours, 06:00–22:00",
+    "criterion": 8,
+    "what_should_happen": "A League match needs 40 minutes of setup, so a move to 06:10 would hold the ground from 05:30. The line says \"That slot cannot be booked\" and \"With setup and teardown, the ground would be held outside its hours: it is open 06:00–22:00 that day.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "That slot cannot be booked",
+      "With setup and teardown, the ground would be held outside its hours: it is open {opens}–{closes} that day."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "moving a cancelled booking says \"It was cancelled\" and \"Request a new booking instead.\"",
+    "criterion": 9,
+    "what_should_happen": "BK0001 has been cancelled. Trying to move it gives \"It was cancelled\" and \"Request a new booking instead.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "It was cancelled",
+      "Request a new booking instead."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "moving a booking whose slot has begun says \"It has already begun\"",
+    "criterion": 10,
+    "what_should_happen": "It is 15:00 on Saturday and BK0001 began at 14:00. Trying to move it gives \"It has already begun\" and \"The interval has begun; it can no longer be confirmed or moved.\".",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/data/messages.js"
+    ],
+    "exact_words": [
+      "Move",
+      "It has already begun",
+      "The interval has begun; it can no longer be confirmed or moved"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "after a refused move nothing has moved: the card and the block keep 14:00–17:00",
+    "criterion": 11,
+    "what_should_happen": "On The day, Sabu tries to move BK0001 to 15:00–18:00 and it clashes. The card still says Slot 14:00–17:00 and Ground held 13:20–17:30, and the block on the strip is still at 14:00 to 17:00.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/pages/caretaker/Day.jsx"
+    ],
+    "exact_words": [
+      "With the buffers, it clashes",
+      "Slot",
+      "Ground held",
+      "{id}, {event}, {from} to {to}, {state}",
+      "Move from",
+      "Move to",
+      "Move"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "a moved booking stays on its day: the card still says Saturday 7 November and the row is in that day's table",
+    "criterion": 12,
+    "what_should_happen": "After BK0001 moves to 13:00–16:00, its row is still in Saturday's table with the new times. Its card still says \"Saturday 7 November · Ground A\": only the times changed.",
+    "look_at": [
+      "src/components/BookingCard.jsx",
+      "src/components/BookingsBrowser.jsx"
+    ],
+    "exact_words": [
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}.",
+      "{date} · Ground {ground}"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "the card that opens from a block on The day has the same \"Move to\" row with the same answers",
+    "criterion": 13,
+    "what_should_happen": "The card Sabu opens from a block on The day has the same \"Move to\" row. A move from 18:00 to 15:00 gives \"The interval must end after it starts.\", and a move to 13:00–16:00 gives the same \"Moved to\" line as on Bookings.",
+    "look_at": [
+      "src/pages/caretaker/Day.jsx",
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Move to",
+      "The interval must end after it starts",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}.",
+      "Move from",
+      "Move",
+      "{id}, {event}, {from} to {to}, {state}"
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "by keyboard: Tab into \"Move from\" and \"Move to\", type the times and Enter moves the booking",
+    "criterion": 14,
+    "what_should_happen": "Without a mouse, Tab reaches the box named \"Move from\", then the one named \"Move to\". Typing 13:00 and 16:00 and pressing Enter moves the booking, just as the Move button does.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Move from",
+      "Move to",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "test": "Enter in the \"Move from\" box moves the booking too",
+    "criterion": 14,
+    "what_should_happen": "With 16:00 in the second box, Deepa types 13:00 in the \"Move from\" box and presses Enter there. The booking moves and the \"Moved to\" line appears.",
+    "look_at": [
+      "src/components/BookingCard.jsx"
+    ],
+    "exact_words": [
+      "Move from",
+      "Move to",
+      "Moved to {from}–{to}; the ground is held {heldFrom}–{heldTo}."
+    ]
+  },
+  {
+    "ticket": "F-09",
+    "criterion": 15,
+    "checked_by": "browser",
+    "reason": "The Move row wrapping onto two lines at phone width needs a real browser's layout."
   }
 ]
